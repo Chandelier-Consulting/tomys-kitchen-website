@@ -19,10 +19,10 @@ export default function InfoCard({ icon, title, children, className = "", delay 
       viewport={{ once: true, amount: 0.25 }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.45, delay, ease: "easeOut" }}
-      className={`rounded-xl border border-border bg-surface p-6 shadow-[0_18px_48px_rgba(26,26,46,0.07)] ${className}`}
+      className={`overflow-hidden rounded-xl border border-border bg-surface p-6 shadow-[0_18px_48px_rgba(0,0,0,0.22)] ${className}`}
     >
       {icon ? (
-        <div className="mb-5 grid h-12 w-12 place-items-center rounded-lg bg-primary/10 text-xl text-primary">
+        <div className="mb-5 grid h-12 w-12 place-items-center rounded-lg bg-primary/15 text-xl text-accent">
           {icon}
         </div>
       ) : null}
