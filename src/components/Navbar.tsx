@@ -24,30 +24,24 @@ export default function Navbar() {
     return scrollY.on("change", (latest) => setIsScrolled(latest > 24));
   }, [scrollY]);
 
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-
   const solidNav = !isHome || isScrolled || isOpen;
 
   return (
     <motion.header
       animate={{
-        backgroundColor: solidNav ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0)",
-        boxShadow: solidNav ? "0 12px 32px rgba(26,26,46,0.08)" : "0 0 0 rgba(0,0,0,0)",
+        backgroundColor: solidNav ? "rgba(17,16,15,0.94)" : "rgba(17,16,15,0)",
+        boxShadow: solidNav ? "0 18px 44px rgba(0,0,0,0.28)" : "0 0 0 rgba(0,0,0,0)",
       }}
       transition={{ duration: 0.25 }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-transparent backdrop-blur-md"
+      className="fixed inset-x-0 top-0 z-50 border-b border-white/10 backdrop-blur-md"
     >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className={`text-xl font-extrabold tracking-normal transition-colors ${
-            solidNav ? "text-primary" : "text-white"
-          }`}
+          className="min-w-0 text-lg font-extrabold tracking-normal text-white transition-colors sm:text-xl"
           aria-label="Tomy's Kitchen home"
         >
-          Tomy&apos;s Kitchen
+          <span className="text-primary">Tomy&apos;s</span> Kitchen
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -57,9 +51,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative text-sm font-semibold transition-colors ${
-                  solidNav ? "text-secondary hover:text-primary" : "text-white/90 hover:text-white"
-                }`}
+                className="relative text-sm font-semibold text-white/82 transition-colors hover:text-white"
               >
                 {link.label}
                 {active ? (
@@ -80,7 +72,7 @@ export default function Navbar() {
           onClick={() => setIsOpen((value) => !value)}
           className={`grid h-11 w-11 place-items-center rounded-full border md:hidden ${
             solidNav
-              ? "border-border text-secondary hover:bg-background"
+              ? "border-white/15 text-white hover:bg-white/10"
               : "border-white/30 text-white hover:bg-white/10"
           }`}
         >
@@ -95,17 +87,18 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.2 }}
-            className="border-t border-border bg-surface px-5 pb-6 shadow-xl md:hidden"
+            className="max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-white/10 bg-[rgba(17,16,15,0.98)] px-5 pb-6 shadow-xl md:hidden"
           >
             <div className="mx-auto flex max-w-7xl flex-col gap-2 pt-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
+                  onClick={() => setIsOpen(false)}
                   className={`rounded-lg px-3 py-3 text-base font-semibold ${
                     pathname === link.href
-                      ? "bg-background text-primary"
-                      : "text-secondary hover:bg-background"
+                      ? "bg-white/10 text-accent"
+                      : "text-white/78 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   {link.label}

@@ -1,16 +1,18 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --background: #FAF7F2;
-  --foreground: #1A1A2E;
-  --primary: #E05D3A;
-  --primary-hover: #C94E2E;
-  --secondary: #1A1A2E;
-  --accent: #F0A500;
-  --surface: #FFFFFF;
-  --muted: #6B7280;
-  --border: #E5E0D9;
+  --background: #171615;
+  --foreground: #FFF7EC;
+  --primary: #E45F3C;
+  --primary-hover: #F0784F;
+  --secondary: #FFF7EC;
+  --accent: #F2B84B;
+  --surface: #211F1D;
+  --muted: #C8B9A3;
+  --border: #37312B;
+  --charcoal: #11100F;
+  --cream: #FFF7EC;
+  --leaf: #6D8B5F;
 }
 
 @theme inline {
@@ -32,4 +34,11 @@ body {
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
 }

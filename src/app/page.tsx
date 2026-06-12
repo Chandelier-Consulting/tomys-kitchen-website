@@ -1,30 +1,31 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FaClock, FaLocationDot, FaPhone, FaStar } from "react-icons/fa6";
 import InfoCard from "@/components/InfoCard";
 import SectionHeading from "@/components/SectionHeading";
 import { featuredItems } from "@/lib/menu-data";
 
-const featureGradients = [
-  "from-primary/90 via-accent/70 to-secondary",
-  "from-accent/90 via-primary/70 to-secondary",
-  "from-secondary via-primary/75 to-accent/80",
-  "from-primary/80 via-secondary to-accent/80",
+const featureImages = [
+  "/images/tomys-quesabirria.png",
+  "/images/tomys-tacos.png",
+  "/images/tomys-quesabirria.png",
+  "/images/tomys-tacos.png",
 ];
 
 export default function Home() {
   return (
     <>
-      <section className="relative isolate flex min-h-[92vh] items-center overflow-hidden bg-secondary px-5 pt-28 text-white sm:px-6 lg:px-8">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_22%_18%,rgba(240,165,0,0.35),transparent_28%),linear-gradient(135deg,rgba(224,93,58,0.96),rgba(26,26,46,0.94)_58%,rgba(26,26,46,1))]" />
-        <div className="absolute inset-0 -z-10 opacity-[0.18] [background-image:linear-gradient(30deg,rgba(255,255,255,.35)_12%,transparent_12.5%,transparent_87%,rgba(255,255,255,.35)_87.5%,rgba(255,255,255,.35)),linear-gradient(150deg,rgba(255,255,255,.35)_12%,transparent_12.5%,transparent_87%,rgba(255,255,255,.35)_87.5%,rgba(255,255,255,.35))] [background-size:72px_124px]" />
+      <section className="relative isolate overflow-hidden bg-[var(--charcoal)] px-5 pb-16 pt-28 text-white sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_12%,rgba(228,95,60,0.34),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(242,184,75,0.18),transparent_24%),linear-gradient(135deg,#11100f_0%,#1b1917_52%,#0c0b0a_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-background to-transparent" />
 
-        <div className="mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div className="max-w-3xl">
-            <p className="mb-4 inline-flex rounded-full bg-white/12 px-4 py-2 text-sm font-bold text-accent ring-1 ring-white/16">
+        <div className="mx-auto grid w-full max-w-7xl gap-10 lg:min-h-[calc(100svh-7rem)] lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div className="max-w-3xl py-10">
+            <p className="mb-5 inline-flex max-w-full rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-accent ring-1 ring-white/16">
               5.0 Yelp rating • Mountain View
             </p>
-            <h1 className="max-w-4xl text-5xl font-extrabold leading-[1.02] tracking-normal sm:text-6xl lg:text-7xl">
-              Authentic Mexican Street Food
+            <h1 className="max-w-4xl text-5xl font-extrabold leading-[0.95] tracking-normal sm:text-6xl lg:text-8xl">
+              Charcoal-fired energy for Mexican street food.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 sm:text-xl">
               Fresh breakfast, tacos, seafood, and daily plates from Chef Tomas Tejeda on El Camino Real.
@@ -43,14 +44,37 @@ export default function Home() {
                 Find the Truck
               </Link>
             </div>
+            <div className="mt-8 grid gap-3 text-sm text-white/72 sm:grid-cols-3">
+              <span className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3">Open Mon-Sat</span>
+              <span className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3">8:30 AM-3:00 PM</span>
+              <span className="rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3">Call ahead pickup</span>
+            </div>
           </div>
 
-          <div className="mb-10 rounded-2xl border border-white/16 bg-white/10 p-5 shadow-2xl backdrop-blur-md lg:mb-0">
-            <div className="grid aspect-[4/3] place-items-center rounded-xl bg-[radial-gradient(circle_at_28%_28%,rgba(240,165,0,.82),transparent_26%),radial-gradient(circle_at_70%_62%,rgba(224,93,58,.88),transparent_30%),linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.04))]">
-              <div className="max-w-xs text-center">
-                <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-white/72">Made Fresh Daily</p>
-                <p className="mt-3 text-4xl font-extrabold">Tacos • Breakfast • Seafood</p>
-              </div>
+          <div className="relative min-h-[420px] sm:min-h-[560px] lg:min-h-[660px]">
+            <div className="absolute inset-x-0 top-4 overflow-hidden rounded-[2rem] border border-white/12 shadow-[0_42px_90px_-44px_rgba(0,0,0,0.9)] sm:inset-x-8 lg:inset-x-12">
+              <Image
+                src="/images/tomys-hero.png"
+                alt="Mexican food truck counter with tacos and warm kitchen light"
+                width={1536}
+                height={1024}
+                priority
+                sizes="(min-width: 1024px) 54vw, 100vw"
+                className="h-[360px] w-full object-cover sm:h-[520px] lg:h-[610px]"
+              />
+            </div>
+            <div className="absolute bottom-2 left-0 w-[52%] min-w-[180px] overflow-hidden rounded-2xl border border-white/14 bg-surface shadow-2xl sm:bottom-8">
+              <Image
+                src="/images/tomys-tacos.png"
+                alt="Fish, shrimp, and carne asada tacos with salsa and lime"
+                width={1536}
+                height={1024}
+                sizes="(min-width: 1024px) 22vw, 52vw"
+                className="aspect-[4/3] w-full object-cover"
+              />
+            </div>
+            <div className="absolute right-0 top-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-white shadow-xl sm:right-2 sm:top-16">
+              Made fresh daily
             </div>
           </div>
         </div>
@@ -66,7 +90,15 @@ export default function Home() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featuredItems.map((item, index) => (
               <InfoCard key={item.name} title={item.name} delay={index * 0.08}>
-                <div className={`mb-5 h-32 rounded-lg bg-gradient-to-br ${featureGradients[index]}`} />
+                <div className="relative mb-5 aspect-[4/3] overflow-hidden rounded-lg">
+                  <Image
+                    src={featureImages[index]}
+                    alt={item.name}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition duration-500 hover:scale-105"
+                  />
+                </div>
                 <div>
                   <span className="mb-3 inline-flex rounded-full bg-accent/16 px-3 py-1 text-sm font-extrabold text-secondary">
                     {item.price}
@@ -108,7 +140,8 @@ export default function Home() {
       </section>
 
       <section className="px-5 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 rounded-2xl bg-primary p-8 text-white shadow-xl shadow-primary/20 md:flex-row md:items-center lg:p-12">
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl border border-border bg-surface shadow-xl shadow-black/20 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="p-8 md:p-10 lg:p-12">
           <div>
             <div className="mb-4 flex text-accent" aria-label="5 star Yelp rating">
               {Array.from({ length: 5 }).map((_, index) => (
@@ -122,10 +155,19 @@ export default function Home() {
           </div>
           <Link
             href="/location"
-            className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full bg-white px-7 text-base font-bold text-primary transition hover:bg-background"
+            className="mt-8 inline-flex min-h-12 shrink-0 items-center justify-center rounded-full bg-primary px-7 text-base font-bold text-white transition hover:bg-primary-hover"
           >
             Location & Hours
           </Link>
+          </div>
+          <Image
+            src="/images/tomys-quesabirria.png"
+            alt="Quesabirria combo with consomme, rice, beans, and seafood tostada"
+            width={1536}
+            height={1024}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="h-72 w-full object-cover lg:h-full"
+          />
         </div>
       </section>
     </>
