@@ -29,19 +29,19 @@ export default function Navbar() {
   return (
     <motion.header
       animate={{
-        backgroundColor: solidNav ? "rgba(17,16,15,0.94)" : "rgba(17,16,15,0)",
-        boxShadow: solidNav ? "0 18px 44px rgba(0,0,0,0.28)" : "0 0 0 rgba(0,0,0,0)",
+        backgroundColor: solidNav ? "rgba(17,16,15,0.92)" : "rgba(17,16,15,0)",
+        boxShadow: solidNav ? "0 18px 44px rgba(0,0,0,0.24)" : "0 0 0 rgba(0,0,0,0)",
       }}
       transition={{ duration: 0.25 }}
       className="fixed inset-x-0 top-0 z-50 border-b border-white/10 backdrop-blur-md"
     >
-      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-18 max-w-6xl items-center justify-between px-5 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="min-w-0 text-lg font-extrabold tracking-normal text-white transition-colors sm:text-xl"
           aria-label="Tomy's Kitchen home"
         >
-          <span className="text-primary">Tomy&apos;s</span> Kitchen
+          <span className="text-primary">Tomy&apos;s</span> <span className="text-cream">Kitchen</span>
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -51,7 +51,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative text-sm font-semibold text-white/82 transition-colors hover:text-white"
+                className="relative text-sm font-bold text-white/78 transition-colors hover:text-white"
               >
                 {link.label}
                 {active ? (
@@ -89,13 +89,13 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-white/10 bg-[rgba(17,16,15,0.98)] px-5 pb-6 shadow-xl md:hidden"
           >
-            <div className="mx-auto flex max-w-7xl flex-col gap-2 pt-3">
+            <div className="mx-auto flex max-w-6xl flex-col gap-2 pt-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`rounded-lg px-3 py-3 text-base font-semibold ${
+                  className={`rounded-lg px-3 py-3 text-base font-bold ${
                     pathname === link.href
                       ? "bg-white/10 text-accent"
                       : "text-white/78 hover:bg-white/10 hover:text-white"

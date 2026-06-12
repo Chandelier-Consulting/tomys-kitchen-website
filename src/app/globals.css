@@ -10,7 +10,7 @@
   --surface: #211F1D;
   --muted: #C8B9A3;
   --border: #37312B;
-  --charcoal: #11100F;
+  --kitchen-night: #11100F;
   --cream: #FFF7EC;
   --leaf: #6D8B5F;
 }
@@ -41,4 +41,9 @@ img,
 video,
 iframe {
   max-width: 100%;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 72%, transparent);
+  color: var(--cream);
 }

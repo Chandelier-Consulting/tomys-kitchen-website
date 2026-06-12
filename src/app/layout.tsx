@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Warm terracotta and charcoal Tomy's Kitchen brand gradient",
+        alt: "Warm terracotta and gold Tomy's Kitchen brand artwork",
       },
     ],
   },

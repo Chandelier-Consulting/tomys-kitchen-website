@@ -10,14 +10,14 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr] lg:px-8">
+    <footer className="border-t border-border bg-[var(--kitchen-night)] text-white">
+      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr] lg:px-8">
         <div>
           <Link href="/" className="text-2xl font-extrabold text-primary">
             Tomy&apos;s Kitchen
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/72">
-            Authentic Mexican street food, breakfast, tacos, and seafood made fresh by Chef Tomas Tejeda.
+            Breakfast, tacos, seafood, and daily plates from Chef Tomas Tejeda&apos;s food truck on El Camino Real.
           </p>
         </div>
 

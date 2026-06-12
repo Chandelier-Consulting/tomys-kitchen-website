@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function LocationPage() {
   return (
     <>
-      <section className="bg-surface px-5 pb-14 pt-32 sm:px-6 lg:px-8">
+      <section className="bg-surface px-5 pb-10 pt-22 sm:px-6 lg:px-8">
         <SectionHeading
           eyebrow="Visit Us"
           title="Location & Hours"
@@ -19,8 +19,8 @@ export default function LocationPage() {
         />
       </section>
 
-      <section className="px-5 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.25fr_0.75fr]">
+      <section className="px-5 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.25fr_0.75fr]">
           <div className="overflow-hidden rounded-2xl border border-border bg-surface shadow-[0_18px_48px_rgba(26,26,46,0.07)]">
             <iframe
               title="Map to Tomy's Kitchen"
@@ -50,8 +50,8 @@ export default function LocationPage() {
         </div>
       </section>
 
-      <section className="px-5 pb-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-2xl border border-border bg-surface p-8 shadow-[0_18px_48px_rgba(26,26,46,0.05)]">
+      <section className="px-5 pb-12 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl rounded-xl border border-border bg-surface p-6 shadow-[0_18px_48px_rgba(26,26,46,0.05)] md:p-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-start">
             <div className="grid h-12 w-12 shrink-0 place-items-center rounded-lg bg-accent/16 text-xl text-secondary">
               <FaRoute aria-hidden />

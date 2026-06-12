@@ -19,14 +19,14 @@ export default function InfoCard({ icon, title, children, className = "", delay 
       viewport={{ once: true, amount: 0.25 }}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.45, delay, ease: "easeOut" }}
-      className={`overflow-hidden rounded-xl border border-border bg-surface p-6 shadow-[0_18px_48px_rgba(0,0,0,0.22)] ${className}`}
+      className={`overflow-hidden rounded-lg border border-border bg-[linear-gradient(145deg,rgba(33,31,29,0.96),rgba(24,23,21,0.96))] p-6 shadow-[0_18px_48px_rgba(0,0,0,0.18)] ${className}`}
     >
       {icon ? (
-        <div className="mb-5 grid h-12 w-12 place-items-center rounded-lg bg-primary/15 text-xl text-accent">
+        <div className="mb-5 grid h-12 w-12 place-items-center rounded-md bg-primary/15 text-xl text-accent ring-1 ring-primary/20">
           {icon}
         </div>
       ) : null}
-      <h2 className="text-xl font-bold text-secondary">{title}</h2>
+      <h2 className="text-xl font-extrabold text-secondary">{title}</h2>
       <div className="mt-3 text-sm leading-6 text-muted">{children}</div>
     </motion.article>
   );
