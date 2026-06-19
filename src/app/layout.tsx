@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
+import MobileActionBar from "@/components/MobileActionBar";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 
@@ -35,6 +36,10 @@ export const metadata: Metadata = {
       },
     ],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#E45F3C",
 };
 
 const localBusinessSchema = {
@@ -90,6 +95,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <MobileActionBar />
       </body>
     </html>
   );

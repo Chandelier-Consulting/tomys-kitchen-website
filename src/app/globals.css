@@ -37,6 +37,12 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 5.75rem;
+  }
+}
+
 img,
 video,
 iframe {
@@ -46,4 +52,41 @@ iframe {
 ::selection {
   background: color-mix(in srgb, var(--primary) 72%, transparent);
   color: var(--cream);
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #11100f !important;
+  }
+
+  header,
+  footer,
+  button,
+  a[href^="tel:"],
+  a[href^="sms:"] {
+    display: none !important;
+  }
+
+  main,
+  section,
+  article,
+  div {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    color: #11100f !important;
+  }
 }

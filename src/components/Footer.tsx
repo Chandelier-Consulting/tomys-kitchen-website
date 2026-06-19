@@ -1,14 +1,24 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaInstagram, FaLocationDot, FaPhone } from "react-icons/fa6";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
+  { href: "/group-orders", label: "Group Orders" },
   { href: "/about", label: "About" },
   { href: "/location", label: "Location" },
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/dashboard")) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-border bg-[var(--kitchen-night)] text-white">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr] lg:px-8">

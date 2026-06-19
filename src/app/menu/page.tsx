@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import SectionHeading from "@/components/SectionHeading";
+import Image from "next/image";
+import Link from "next/link";
+import { FaArrowRight, FaPhone } from "react-icons/fa6";
 import { menuCategories } from "@/lib/menu-data";
 
 export const metadata: Metadata = {
@@ -7,79 +9,93 @@ export const metadata: Metadata = {
   description: "Explore Tomy's Kitchen breakfast, tacos, mains, seafood cocktails, and drinks in Mountain View.",
 };
 
+const images = ["/images/tomys-quesabirria.png", "/images/tomys-tacos.png", "/images/tomys-hero.png"];
+
 export default function MenuPage() {
   return (
     <>
-      <section className="bg-[var(--kitchen-night)] px-5 pb-10 pt-22 text-white sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Fresh Daily"
-          title="Breakfast, tacos, seafood, and daily plates"
-          subtitle="A practical food truck menu from Chef Tomas Tejeda, made for quick decisions and fresh cooking on El Camino Real."
-        />
-      </section>
-
-      <section className="px-5 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[230px_minmax(0,1fr)]">
-          <aside className="min-w-0 max-w-full lg:sticky lg:top-28 lg:self-start">
-            <nav
-              aria-label="Menu categories"
-              className="flex max-w-full gap-2 overflow-x-auto rounded-lg border border-border bg-surface p-2 shadow-sm [scrollbar-width:none] lg:flex-col lg:overflow-x-visible"
-            >
-              {menuCategories.map((category) => (
-                <a
-                  key={category.name}
-                  href={`#${category.name.toLowerCase().replaceAll(" ", "-")}`}
-                  className="shrink-0 whitespace-nowrap rounded-md px-4 py-3 text-sm font-extrabold text-muted transition hover:bg-background hover:text-primary lg:shrink"
-                >
-                  {category.name}
-                </a>
-              ))}
-            </nav>
-            <div className="mt-5 hidden rounded-lg border border-border bg-surface p-5 text-sm leading-6 text-muted lg:block">
-              <p className="font-extrabold text-secondary">Call ahead pickup</p>
-              <a className="mt-2 block text-primary hover:text-primary-hover" href="tel:+16502898628">
-                (650) 289-8628
+      <section className="relative isolate overflow-hidden bg-[var(--kitchen-night)] px-5 pb-14 pt-28 text-white sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-20">
+          <Image src="/images/tomys-quesabirria.png" alt="Quesabirria combo from Tomy's Kitchen" fill priority sizes="100vw" className="object-cover opacity-38" />
+        </div>
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,#11100f_0%,rgba(17,16,15,.96)_44%,rgba(17,16,15,.52)_100%)]" />
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Menu built for quick pickup</p>
+            <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-7xl">
+              Pick fast. Call ahead. Eat well.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
+              Breakfast, tacos, seafood cocktails, mains, and drinks from Chef Tomas Tejeda&apos;s truck on El Camino Real.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
+                Call order <FaPhone aria-hidden />
               </a>
+              <Link href="/location" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-white/24 px-7 text-base font-black text-white transition hover:bg-white/10">
+                Directions <FaArrowRight aria-hidden />
+              </Link>
             </div>
-          </aside>
-
-          <div className="grid min-w-0 gap-8">
-            {menuCategories.map((category) => (
-              <section
-                key={category.name}
-                id={category.name.toLowerCase().replaceAll(" ", "-")}
-                className="scroll-mt-28 overflow-hidden rounded-xl border border-border bg-surface shadow-[0_18px_48px_rgba(0,0,0,0.14)]"
-              >
-                <div className="border-b border-border bg-[linear-gradient(135deg,rgba(228,95,60,0.12),rgba(242,184,75,0.08))] px-5 py-4 sm:px-7">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                    <div>
-                      <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
-                        Tomy&apos;s Kitchen
-                      </p>
-                      <h2 className="mt-1 text-xl font-extrabold text-secondary sm:text-2xl">{category.name}</h2>
-                    </div>
-                    <span className="w-fit rounded-full bg-primary/15 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] text-primary">
-                      {category.items.length} items
-                    </span>
-                  </div>
-                </div>
-                <div className="grid gap-0 px-5 py-2 sm:px-7">
-                  {category.items.map((item) => (
-                    <article
-                      key={item.name}
-                      className="grid gap-2 border-b border-border/80 py-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:gap-5"
-                    >
-                      <div>
-                        <h3 className="text-base font-extrabold text-secondary">{item.name}</h3>
-                        <p className="mt-1 max-w-3xl text-sm leading-6 text-muted">{item.description}</p>
-                      </div>
-                      <p className="text-base font-extrabold text-primary sm:text-right">{item.price}</p>
-                    </article>
-                  ))}
-                </div>
-              </section>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {images.map((src, index) => (
+              <div key={src} className={`overflow-hidden rounded-3xl border border-white/12 bg-white/8 p-2 ${index === 1 ? "mt-10" : ""}`}>
+                <Image src={src} alt="Tomy's Kitchen menu item" width={520} height={700} sizes="(min-width: 1024px) 16vw, 33vw" className="h-80 w-full rounded-2xl object-cover" />
+              </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="sticky top-[72px] z-30 border-y border-border bg-background/92 px-5 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
+        <nav aria-label="Menu categories" className="mx-auto flex max-w-6xl gap-2 overflow-x-auto [scrollbar-width:none]">
+          {menuCategories.map((category) => (
+            <a key={category.name} href={`#${category.name.toLowerCase().replaceAll(" ", "-")}`} className="shrink-0 rounded-full border border-border bg-surface px-5 py-3 text-sm font-black text-muted transition hover:border-primary hover:text-white">
+              {category.name}
+            </a>
+          ))}
+        </nav>
+      </section>
+
+      <section className="px-5 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8">
+          {menuCategories.map((category, categoryIndex) => (
+            <section key={category.name} id={category.name.toLowerCase().replaceAll(" ", "-")} className="scroll-mt-36 overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_24px_80px_rgba(0,0,0,.24)]">
+              <div className="grid lg:grid-cols-[360px_1fr]">
+                <div className="relative min-h-72">
+                  <Image src={images[categoryIndex % images.length]} alt={`${category.name} at Tomy's Kitchen`} fill sizes="(min-width: 1024px) 360px, 100vw" className="object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/68 to-transparent" />
+                  <div className="absolute bottom-5 left-5 right-5">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">Tomy&apos;s Kitchen</p>
+                    <h2 className="mt-2 text-4xl font-black leading-none text-white">{category.name}</h2>
+                  </div>
+                </div>
+                <div className="p-5 sm:p-7">
+                  <div className="grid gap-0">
+                    {category.items.map((item) => (
+                      <article key={item.name} className="grid gap-3 border-b border-border py-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:gap-6">
+                        <div>
+                          <h3 className="text-xl font-black text-secondary">{item.name}</h3>
+                          <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">{item.description}</p>
+                        </div>
+                        <p className="text-xl font-black text-primary sm:text-right">{item.price}</p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-5 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-5 rounded-[2rem] border border-primary/30 bg-primary/12 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
+          <div>
+            <h2 className="text-3xl font-black text-secondary">Ordering for a crew?</h2>
+            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call ahead so Tomas can time larger breakfast, taco, or lunch pickups without slowing the truck window.</p>
+          </div>
+          <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
         </div>
       </section>
     </>

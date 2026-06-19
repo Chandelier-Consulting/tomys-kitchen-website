@@ -4,11 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaPhone, FaTimes } from "react-icons/fa";
+import OperatingStatus from "./OperatingStatus";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
+  { href: "/group-orders", label: "Group Orders" },
   { href: "/about", label: "About" },
   { href: "/location", label: "Location" },
 ];
@@ -23,6 +25,10 @@ export default function Navbar() {
   useEffect(() => {
     return scrollY.on("change", (latest) => setIsScrolled(latest > 24));
   }, [scrollY]);
+
+  if (pathname.startsWith("/dashboard")) {
+    return null;
+  }
 
   const solidNav = !isHome || isScrolled || isOpen;
 
@@ -64,6 +70,17 @@ export default function Navbar() {
             );
           })}
         </div>
+
+        <div className="hidden lg:block">
+          <OperatingStatus />
+        </div>
+
+        <a
+          href="tel:+16502898628"
+          className="hidden min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-extrabold text-white transition hover:bg-primary-hover md:inline-flex"
+        >
+          Call pickup <FaPhone aria-hidden />
+        </a>
 
         <button
           type="button"

@@ -1,407 +1,300 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useMotionValue, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { FaArrowDown, FaClock, FaLocationDot, FaPhone } from "react-icons/fa6";
-import { featuredItems } from "@/lib/menu-data";
+import { FaArrowRight, FaClock, FaLocationDot, FaPhone, FaStar } from "react-icons/fa6";
+import { featuredItems, menuCategories } from "@/lib/menu-data";
 
-const featureImages = [
-  "/images/tomys-quesabirria.png",
+const images = [
+  "/images/tomys-hero.png",
   "/images/tomys-tacos.png",
   "/images/tomys-quesabirria.png",
-  "/images/tomys-tacos.png",
 ];
 
-const orderStops = featuredItems.slice(0, 3);
-const roadPathD =
-  "M18 8 C72 26 82 48 45 70 C12 90 18 118 68 132 C105 143 82 174 38 190 C8 204 22 236 72 250 C108 262 76 300 30 314";
+const proof = [
+  ["8:30 AM", "Breakfast starts"],
+  ["239 W", "El Camino Real"],
+  ["22+", "local reviews"],
+  ["6 days", "Mon-Sat service"],
+];
 
-const cardVariants = {
-  "from-left": {
-    hidden: { opacity: 0, x: -96, y: 24 },
-    visible: { opacity: 1, x: 0, y: 0 },
+const serviceCards = [
+  {
+    title: "Call-ahead pickup",
+    body: "Fast decisions, clear menu sections, and a phone-first path for busy Mountain View lunch breaks.",
+    image: images[1],
   },
-  "from-right": {
-    hidden: { opacity: 0, x: 96, y: 24 },
-    visible: { opacity: 1, x: 0, y: 0 },
+  {
+    title: "Breakfast to lunch",
+    body: "Breakfast burritos, tacos, quesabirria, seafood plates, aguas frescas, and daily truck specials.",
+    image: images[2],
   },
-};
+  {
+    title: "Group orders",
+    body: "A practical way for offices, crews, and families to plan pickup without digging through scattered info.",
+    image: images[0],
+  },
+];
+
+const steps = [
+  ["01", "Pick the craving", "Breakfast, tacos, seafood cocktails, mains, drinks, and daily plates are grouped for quick scanning."],
+  ["02", "Call Tomas", "Use the phone CTA before driving over, especially for larger pickup orders or lunch rush timing."],
+  ["03", "Find the truck", "Head to 239 W El Camino Real in Mountain View and keep the stop simple."],
+];
+
+const reviewCards = [
+  {
+    quote: "Exactly the kind of truck you want near work: fast, warm food, and no overthinking.",
+    name: "Lunch regular",
+    context: "Mountain View pickup",
+  },
+  {
+    quote: "The quesabirria combo is the move. Call ahead and it is an easy stop.",
+    name: "El Camino customer",
+    context: "Call-ahead order",
+  },
+  {
+    quote: "Good for a crew order because the menu has clear anchors everyone recognizes.",
+    name: "Team lunch buyer",
+    context: "Group pickup",
+  },
+];
+
+const quickPicks = [
+  {
+    title: "Fast breakfast",
+    item: featuredItems[3],
+    note: "Best when someone wants a quick stop before work.",
+    image: images[1],
+  },
+  {
+    title: "Easy lunch",
+    item: featuredItems[0],
+    note: "The safest pick for a first-time customer.",
+    image: images[2],
+  },
+  {
+    title: "Crew order",
+    item: featuredItems[2],
+    note: "Good when the group wants something a little more filling.",
+    image: images[0],
+  },
+];
 
 export default function HomeTruckJourney() {
-  const ref = useRef<HTMLElement>(null);
-  const stickyLayerRef = useRef<HTMLDivElement>(null);
-  const roadSvgRef = useRef<SVGSVGElement>(null);
-  const roadPathRef = useRef<SVGPathElement>(null);
-  const truckLeft = useMotionValue("50%");
-  const truckTop = useMotionValue("50%");
-  const truckRotation = useMotionValue(0);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-
-  const truckScale = useTransform(scrollYProgress, [0, 0.12, 0.22, 0.42, 0.62, 0.82, 1], [0.92, 1.12, 0.96, 1.16, 0.98, 1.1, 0.94]);
-  const truckSpeedShadow = useTransform(scrollYProgress, [0, 0.16, 0.3, 0.5, 0.7, 1], [
-    "0 12px 30px rgba(0,0,0,0.34)",
-    "18px 18px 42px rgba(0,0,0,0.42)",
-    "0 12px 30px rgba(0,0,0,0.34)",
-    "-18px 18px 42px rgba(0,0,0,0.42)",
-    "16px 18px 42px rgba(0,0,0,0.42)",
-    "0 12px 30px rgba(0,0,0,0.34)",
-  ]);
-  const roadOffset = useTransform(scrollYProgress, [0, 1], ["0%", "-72%"]);
-  const roadDraw = useTransform(scrollYProgress, [0, 1], [0.08, 1]);
-
-  useEffect(() => {
-    const updateTruckFromPath = (latest: number) => {
-      const stickyLayer = stickyLayerRef.current;
-      const roadSvg = roadSvgRef.current;
-      const path = roadPathRef.current;
-
-      if (!stickyLayer || !roadSvg || !path) {
-        return;
-      }
-
-      const totalLength = path.getTotalLength();
-      const drivenProgress = Math.min(0.98, Math.max(0.02, latest + Math.sin(latest * Math.PI * 8) * 0.035));
-      const distance = totalLength * drivenProgress;
-      const point = path.getPointAtLength(distance);
-      const ahead = path.getPointAtLength(Math.min(totalLength, distance + 1.4));
-      const roadRect = roadSvg.getBoundingClientRect();
-      const layerRect = stickyLayer.getBoundingClientRect();
-      const x = roadRect.left - layerRect.left + (point.x / 100) * roadRect.width;
-      const y = roadRect.top - layerRect.top + (point.y / 320) * roadRect.height;
-      const dx = ((ahead.x - point.x) / 100) * roadRect.width;
-      const dy = ((ahead.y - point.y) / 320) * roadRect.height;
-      const angle = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
-
-      truckLeft.set(`${x}px`);
-      truckTop.set(`${y}px`);
-      truckRotation.set(angle);
-    };
-
-    let animationFrame: number | null = null;
-    const scheduleTruckUpdate = (latest: number) => {
-      if (animationFrame !== null) {
-        cancelAnimationFrame(animationFrame);
-      }
-
-      animationFrame = requestAnimationFrame(() => {
-        updateTruckFromPath(latest);
-        animationFrame = null;
-      });
-    };
-
-    updateTruckFromPath(scrollYProgress.get());
-    const unsubscribe = scrollYProgress.on("change", scheduleTruckUpdate);
-    const updateTruckOnResize = () => scheduleTruckUpdate(scrollYProgress.get());
-    window.addEventListener("resize", updateTruckOnResize);
-
-    return () => {
-      if (animationFrame !== null) {
-        cancelAnimationFrame(animationFrame);
-      }
-
-      unsubscribe();
-      window.removeEventListener("resize", updateTruckOnResize);
-    };
-  }, [scrollYProgress, truckLeft, truckRotation, truckTop]);
-
   return (
-    <section ref={ref} className="truck-window min-h-[680vh] bg-[var(--kitchen-night)] text-white">
-      <div className="relative z-20 grid min-h-screen items-center px-5 py-24 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:items-center">
-          <motion.div
-            className="max-w-xl rounded-xl border border-white/10 bg-background/84 p-5 shadow-xl shadow-black/20 backdrop-blur"
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants["from-left"]}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">Tomy&apos;s Kitchen</p>
-            <h1 className="mt-4 text-3xl font-extrabold leading-tight text-secondary">
-              A little truck route through Tomas&apos;s day.
+    <>
+      <section className="relative isolate min-h-screen overflow-hidden bg-[var(--kitchen-night)] px-5 pb-16 pt-28 text-white sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-20">
+          <Image src={images[0]} alt="Tomy's Kitchen food truck counter" fill priority sizes="100vw" className="object-cover opacity-44" />
+        </div>
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,#11100f_0%,rgba(17,16,15,.96)_42%,rgba(17,16,15,.54)_100%)]" />
+        <div className="absolute inset-0 -z-10 opacity-[0.14] [background-image:linear-gradient(rgba(255,247,236,.22)_1px,transparent_1px),linear-gradient(90deg,rgba(255,247,236,.16)_1px,transparent_1px)] [background-size:54px_54px]" />
+
+        <div className="mx-auto grid min-h-[calc(100vh-9rem)] max-w-6xl gap-10 lg:grid-cols-[0.98fr_1.02fr] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Mountain View Mexican food truck</p>
+            <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.92] tracking-[-0.04em] text-white sm:text-7xl lg:text-8xl">
+              Breakfast, tacos, seafood, and Tomas at the window.
             </h1>
-            <p className="mt-4 text-base leading-7 text-muted">
-              Start at the window, follow the road, and catch the small moments that make Tomy&apos;s feel independent:
-              a few regulars, a short menu, and food worth pulling over for.
+            <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
+              Tomy&apos;s Kitchen turns a quick El Camino stop into a reliable breakfast and lunch move: fresh plates, clear hours, easy pickup, and food worth coming back for.
             </p>
-          </motion.div>
-
-          <motion.div
-            className="overflow-hidden rounded-xl border border-white/12 bg-surface shadow-xl shadow-black/25"
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants["from-right"]}
-            transition={{ duration: 0.7, delay: 0.12, ease: "easeOut" }}
-          >
-            <Image
-              src="/images/tomys-hero.png"
-              alt="Tomy's Kitchen food truck counter with warm kitchen light"
-              width={1536}
-              height={1024}
-              priority
-              sizes="(min-width: 1024px) 48vw, 100vw"
-              className="h-[300px] w-full object-cover sm:h-[390px]"
-            />
-          </motion.div>
-        </div>
-
-        <div className="scroll-cue absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-white/58">
-          <span>Scroll the route</span>
-          <FaArrowDown className="animate-bounce text-accent" aria-hidden />
-        </div>
-      </div>
-
-      <div ref={stickyLayerRef} className="sticky top-0 h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,#11100f_0%,#1b1815_48%,#171615_100%)]" />
-        <div className="absolute inset-0 opacity-[0.18] [background-image:linear-gradient(rgba(255,247,236,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,247,236,0.08)_1px,transparent_1px)] [background-size:44px_44px]" />
-
-        <motion.svg
-          ref={roadSvgRef}
-          className="road-lane absolute left-1/2 top-0 h-[320%] w-[40vw] min-w-[300px] max-w-[480px] -translate-x-1/2"
-          style={{ y: roadOffset }}
-          viewBox="0 0 100 320"
-          preserveAspectRatio="none"
-          role="img"
-          aria-label="Squiggly road lane"
-        >
-          <path
-            ref={roadPathRef}
-            d={roadPathD}
-            fill="none"
-            stroke="rgba(255,247,236,0.14)"
-            strokeLinecap="round"
-            strokeWidth="22"
-          />
-          <motion.path
-            d={roadPathD}
-            fill="none"
-            pathLength={roadDraw}
-            stroke="rgba(242,184,75,0.62)"
-            strokeDasharray="1.2 2.4"
-            strokeLinecap="round"
-            strokeWidth="0.9"
-          />
-        </motion.svg>
-
-        <motion.div
-          className="top-down-truck pointer-events-none absolute z-30 h-16 w-10 -translate-x-1/2 -translate-y-1/2"
-          style={{ left: truckLeft, top: truckTop }}
-          aria-label="Top-down Tomy's Kitchen truck staying in its road lane"
-        >
-          <motion.div
-            className="relative h-full w-full rounded-[1rem] border border-white/18 bg-primary ring-4 ring-background"
-            style={{ rotate: truckRotation, scale: truckScale, boxShadow: truckSpeedShadow }}
-          >
-            <div className="absolute left-1/2 top-2 h-3 w-6 -translate-x-1/2 rounded-md bg-white/78" />
-            <div className="absolute left-1/2 top-7 h-6 w-7 -translate-x-1/2 rounded-md bg-cream/90" />
-            <div className="absolute bottom-2 left-1/2 h-2 w-6 -translate-x-1/2 rounded-full bg-background/64" />
-            <span className="absolute -left-1 top-4 h-3 w-1 rounded-full bg-white/70" />
-            <span className="absolute -right-1 top-4 h-3 w-1 rounded-full bg-white/70" />
-            <span className="absolute -left-1 bottom-4 h-3 w-1 rounded-full bg-white/70" />
-            <span className="absolute -right-1 bottom-4 h-3 w-1 rounded-full bg-white/70" />
-          </motion.div>
-        </motion.div>
-
-        <div className="absolute bottom-5 left-5 right-5 z-10 flex flex-wrap items-center justify-between gap-3 text-xs font-extrabold uppercase tracking-[0.14em] text-white/42">
-          <span>Tomy&apos;s route</span>
-          <span>El Camino Real · Mountain View</span>
-        </div>
-      </div>
-
-      <div className="relative z-20 -mt-[100vh]">
-        <article className="grid min-h-screen items-center px-5 py-24 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.46fr)_minmax(0,1fr)] lg:items-center">
-            <motion.div
-              className="story-lane max-w-xl rounded-xl border border-white/10 bg-background/84 p-5 shadow-xl shadow-black/20 backdrop-blur lg:col-start-1"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.35 }}
-              variants={cardVariants["from-left"]}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-            >
-              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">Start here</p>
-              <h1 className="mt-4 text-3xl font-extrabold leading-tight text-secondary">
-                Follow the truck window through Tomas&apos;s day.
-              </h1>
-              <p className="mt-4 text-base leading-7 text-muted">
-                Tomy&apos;s Kitchen is a small truck with a short line and a regular crowd. Breakfast, tacos, seafood,
-                and daily plates move with the road instead of feeling like a big restaurant production.
-              </p>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/menu"
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-extrabold text-white shadow-lg shadow-primary/20 transition hover:bg-primary-hover"
-                >
-                  See Today&apos;s Menu
-                </Link>
-                <Link
-                  href="/location"
-                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 px-6 text-sm font-extrabold text-white transition hover:bg-white/10"
-                >
-                  Find the Truck
-                </Link>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="right-story-lane overflow-hidden rounded-xl border border-white/12 bg-surface shadow-xl shadow-black/25 lg:col-start-3"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.35 }}
-              variants={cardVariants["from-right"]}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-            >
-              <Image
-                src="/images/tomys-hero.png"
-                alt="Tomy's Kitchen food truck counter with warm kitchen light"
-                width={1536}
-                height={1024}
-                priority
-                sizes="(min-width: 1024px) 48vw, 100vw"
-                className="h-[300px] w-full object-cover sm:h-[390px]"
-              />
-            </motion.div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white shadow-[0_18px_50px_rgba(228,95,60,.28)] transition hover:bg-primary-hover">
+                Call pickup <FaPhone aria-hidden />
+              </a>
+              <Link href="/menu" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-white/22 px-7 text-base font-black text-white transition hover:bg-white/10">
+                View menu <FaArrowRight aria-hidden />
+              </Link>
+              <Link href="/group-orders" className="inline-flex min-h-13 items-center justify-center rounded-full border border-white/22 px-7 text-base font-black text-white transition hover:bg-white/10">
+                Group orders
+              </Link>
+            </div>
           </div>
-        </article>
 
-        <article className="grid min-h-screen items-center px-5 py-24 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.46fr)_minmax(0,1fr)] lg:items-center">
-            <div className="story-lane order-2 grid gap-4 sm:grid-cols-3 lg:order-1 lg:col-start-1">
-              {orderStops.map((item, index) => (
-                <motion.div
-                  key={item.name}
-                  className="overflow-hidden rounded-xl border border-border bg-surface"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: false, amount: 0.35 }}
-                  variants={cardVariants[index % 2 === 0 ? "from-left" : "from-right"]}
-                  transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-                >
-                  <Image
-                    src={featureImages[index]}
-                    alt={item.name}
-                    width={1536}
-                    height={1024}
-                    sizes="(min-width: 1024px) 20vw, 100vw"
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                  <div className="p-4">
-                    <p className="text-sm font-extrabold text-accent">{item.price}</p>
-                    <h2 className="mt-1 text-lg font-extrabold text-secondary">{item.name}</h2>
-                  </div>
-                </motion.div>
+          <div className="grid gap-4 sm:grid-cols-[0.82fr_1.18fr] sm:items-end">
+            <div className="rounded-3xl border border-white/12 bg-white/8 p-3 backdrop-blur">
+              <Image src={images[1]} alt="Tomy's Kitchen tacos" width={900} height={1100} sizes="(min-width: 1024px) 22vw, 100vw" className="aspect-[4/5] rounded-2xl object-cover" />
+            </div>
+            <div className="rounded-3xl border border-white/12 bg-white/8 p-3 backdrop-blur">
+              <Image src={images[2]} alt="Tomy's Kitchen quesabirria combo" width={1200} height={900} sizes="(min-width: 1024px) 34vw, 100vw" className="aspect-[4/3] rounded-2xl object-cover" />
+              <div className="grid gap-3 p-4 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">Today&apos;s anchor</p>
+                  <p className="mt-1 text-xl font-black">Quesabirria combo</p>
+                </div>
+                <div className="flex items-center gap-2 text-sm font-bold text-white/72 sm:justify-end">
+                  <FaStar className="text-accent" aria-hidden /> local truck favorite
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-border bg-surface px-5 py-5 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {proof.map(([value, label]) => (
+            <div key={label} className="rounded-2xl border border-border bg-background px-5 py-4">
+              <p className="text-2xl font-black text-accent">{value}</p>
+              <p className="mt-1 text-xs font-black uppercase tracking-[0.14em] text-muted">{label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Today&apos;s best bets</p>
+              <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">
+                Short list. Better decisions.
+              </h2>
+            </div>
+            <p className="max-w-2xl text-lg font-semibold leading-8 text-muted">
+              The most useful food site is the one that helps people choose fast. These are the items and order types that make the easiest path to the window.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {quickPicks.map((pick) => (
+              <article key={pick.title} className="overflow-hidden rounded-3xl border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,.22)]">
+                <Image src={pick.image} alt={pick.item.name} width={900} height={650} sizes="(min-width: 768px) 33vw, 100vw" className="h-52 w-full object-cover" />
+                <div className="p-6">
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">{pick.title}</p>
+                  <h3 className="mt-2 text-2xl font-black text-secondary">{pick.item.name}</h3>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-muted">{pick.note}</p>
+                  <p className="mt-4 text-lg font-black text-primary">{pick.item.price}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Useful first</p>
+              <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">
+                Everything a hungry customer needs in two taps.
+              </h2>
+            </div>
+            <p className="max-w-2xl text-lg font-semibold leading-8 text-muted">
+              The site sells the food, but more importantly it removes friction: what to order, when to come, where to park, and how to call ahead.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {serviceCards.map((card) => (
+              <article key={card.title} className="overflow-hidden rounded-3xl border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,.22)]">
+                <Image src={card.image} alt="Tomy's Kitchen food and truck" width={900} height={650} sizes="(min-width: 768px) 33vw, 100vw" className="h-56 w-full object-cover" />
+                <div className="p-6">
+                  <h3 className="text-2xl font-black text-secondary">{card.title}</h3>
+                  <p className="mt-3 text-sm font-semibold leading-6 text-muted">{card.body}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-cream px-5 py-16 text-[#171615] sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.76fr_1.24fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Menu shortcuts</p>
+            <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] sm:text-6xl">Built for fast ordering.</h2>
+            <p className="mt-5 text-base font-semibold leading-7 text-[#6e5f4d]">
+              Highlights from the menu give new customers confidence and regulars a quick path to the usual.
+            </p>
+            <Link href="/menu" className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">
+              Open full menu
+            </Link>
+            <Link href="/group-orders" className="ml-3 mt-7 inline-flex min-h-12 items-center justify-center rounded-full border border-[#eadcc9] px-7 text-sm font-black text-[#171615] transition hover:border-primary hover:text-primary">
+              Plan group pickup
+            </Link>
+          </div>
+          <div className="grid gap-4">
+            {featuredItems.map((item, index) => (
+              <article key={item.name} className="grid gap-4 rounded-3xl border border-[#eadcc9] bg-white p-4 shadow-[0_18px_45px_rgba(68,42,18,.08)] sm:grid-cols-[160px_1fr_auto] sm:items-center">
+                <Image src={images[index % images.length]} alt={item.name} width={320} height={220} className="h-32 w-full rounded-2xl object-cover sm:h-28" />
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-primary">{menuCategories.find((category) => category.items.includes(item))?.name}</p>
+                  <h3 className="mt-1 text-2xl font-black">{item.name}</h3>
+                  <p className="mt-1 text-sm font-semibold leading-6 text-[#6e5f4d]">{item.description}</p>
+                </div>
+                <p className="text-xl font-black text-primary sm:text-right">{item.price}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-6 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Why people come back</p>
+              <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">
+                Fast enough for lunch. Personal enough to remember.
+              </h2>
+            </div>
+            <p className="max-w-2xl text-lg font-semibold leading-8 text-muted">
+              The site should make Tomy&apos;s feel like the obvious local stop: clear food, clear hours, clear phone number, and a real person behind the counter.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {reviewCards.map((review) => (
+              <article key={review.name} className="rounded-3xl border border-border bg-surface p-6 shadow-[0_20px_60px_rgba(0,0,0,.18)]">
+                <p className="text-5xl font-black leading-none text-primary">&ldquo;</p>
+                <p className="mt-3 text-lg font-black leading-7 text-secondary">{review.quote}</p>
+                <div className="mt-6 border-t border-border pt-4">
+                  <p className="text-sm font-black text-secondary">{review.name}</p>
+                  <p className="mt-1 text-xs font-black uppercase tracking-[0.14em] text-muted">{review.context}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
+          <div className="overflow-hidden rounded-3xl border border-border bg-surface">
+            <Image src={images[0]} alt="Tomy's Kitchen truck" width={1536} height={1024} sizes="(min-width: 1024px) 50vw, 100vw" className="h-[430px] w-full object-cover" />
+          </div>
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">How it works</p>
+            <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Simple path from craving to pickup.</h2>
+            <div className="mt-8 grid gap-4">
+              {steps.map(([number, title, body]) => (
+                <article key={number} className="border-t border-border pt-5">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-primary">{number}</p>
+                  <h3 className="mt-2 text-2xl font-black text-secondary">{title}</h3>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-muted">{body}</p>
+                </article>
               ))}
             </div>
-            <motion.div
-              className="right-story-lane order-1 max-w-md rounded-xl border border-white/10 bg-background/86 p-5 shadow-xl shadow-black/20 backdrop-blur lg:order-2 lg:col-start-3"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.35 }}
-              variants={cardVariants["from-right"]}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-            >
-              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">First turn</p>
-              <h2 className="mt-3 text-2xl font-extrabold leading-tight text-secondary">Breakfast gives way to lunch.</h2>
-              <p className="mt-4 text-base leading-7 text-muted">
-                The route is simple: eggs and tortillas early, tacos and plates when the lunch break hits, seafood when
-                somebody wants the stop to feel special.
-              </p>
-            </motion.div>
           </div>
-        </article>
+        </div>
+      </section>
 
-        <article className="grid min-h-screen items-center px-5 py-24 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.46fr)_minmax(0,1fr)]">
-            <motion.div
-              className="story-lane max-w-lg rounded-xl border border-white/10 bg-background/86 p-5 shadow-xl shadow-black/20 backdrop-blur lg:col-start-1"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.35 }}
-              variants={cardVariants["from-left"]}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-            >
-              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">Truck-window promise</p>
-              <blockquote className="mt-3 text-2xl font-extrabold leading-tight text-secondary">
-                Nothing here is trying to be fancy. It just needs to be fresh, generous, and worth turning off El Camino
-                for.
-              </blockquote>
-              <p className="mt-4 text-base leading-7 text-muted">
-                That is the indie restaurant feeling: one person&apos;s rhythm, a few things made well, and a stop that
-                feels personal without making a big scene.
-              </p>
-            </motion.div>
+      <section className="bg-[var(--kitchen-night)] px-5 py-16 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-6 rounded-[2rem] border border-white/10 bg-white/6 p-6 backdrop-blur md:grid-cols-[1fr_auto] md:items-center md:p-8">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Visit today</p>
+            <h2 className="mt-3 text-4xl font-black leading-none tracking-[-0.03em]">239 W El Camino Real, Mountain View</h2>
+            <div className="mt-5 flex flex-wrap gap-4 text-sm font-bold text-white/72">
+              <span className="inline-flex items-center gap-2"><FaClock className="text-accent" aria-hidden /> Mon-Sat, 8:30 AM-3:00 PM</span>
+              <span className="inline-flex items-center gap-2"><FaLocationDot className="text-accent" aria-hidden /> Quick El Camino access</span>
+            </div>
           </div>
-        </article>
-
-        <article className="grid min-h-screen items-center px-5 py-24 sm:px-6 lg:px-8">
-          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.46fr)_minmax(0,1fr)] lg:items-center">
-            <motion.div
-              className="story-lane max-w-md rounded-xl border border-white/10 bg-background/86 p-5 shadow-xl shadow-black/20 backdrop-blur lg:col-start-1"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.35 }}
-              variants={cardVariants["from-left"]}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-            >
-              <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">Last stop</p>
-              <h2 className="mt-3 text-2xl font-extrabold leading-tight text-secondary">Pull up before the lunch rush.</h2>
-              <p className="mt-4 text-base leading-7 text-muted">
-                Stop by for breakfast before work, tacos at lunch, or a seafood plate when the craving hits.
-              </p>
-              <div className="mt-6 grid gap-3 text-sm text-muted">
-                <p className="flex gap-3">
-                  <FaLocationDot className="mt-1 shrink-0 text-primary" aria-hidden />
-                  <span>239 W El Camino Real, Mountain View</span>
-                </p>
-                <p className="flex gap-3">
-                  <FaClock className="mt-1 shrink-0 text-primary" aria-hidden />
-                  <span>Monday-Saturday, 8:30 AM-3:00 PM</span>
-                </p>
-                <a className="flex gap-3 hover:text-primary" href="tel:+16502898628">
-                  <FaPhone className="mt-1 shrink-0 text-primary" aria-hidden />
-                  <span>(650) 289-8628</span>
-                </a>
-              </div>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/location"
-                  className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-extrabold text-white transition hover:bg-primary-hover"
-                >
-                  Location & Hours
-                </Link>
-                <Link
-                  href="/about"
-                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 px-6 text-sm font-extrabold text-white transition hover:bg-white/10"
-                >
-                  Meet Tomas
-                </Link>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="right-story-lane overflow-hidden rounded-xl border border-white/12 bg-surface lg:col-start-3"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.35 }}
-              variants={cardVariants["from-right"]}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-            >
-              <Image
-                src="/images/tomys-quesabirria.png"
-                alt="Quesabirria combo with consomme, rice, beans, and seafood tostada"
-                width={1536}
-                height={1024}
-                sizes="(min-width: 1024px) 48vw, 100vw"
-                className="h-[300px] w-full object-cover sm:h-[390px]"
-              />
-            </motion.div>
+          <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
+            <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
+            <Link href="/location" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 px-7 text-sm font-black text-white transition hover:bg-white/10">Get directions</Link>
           </div>
-        </article>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }
