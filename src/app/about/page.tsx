@@ -5,8 +5,8 @@ import type { IconType } from "react-icons";
 import { FaBowlFood, FaHeart, FaLeaf, FaPeopleCarryBox } from "react-icons/fa6";
 
 export const metadata: Metadata = {
-  title: "About Chef Tomas",
-  description: "Meet Chef Tomas Tejeda and the made daily Mexican cooking behind Tomy's Kitchen in Mountain View.",
+  title: "About",
+  description: "Learn how Tomy's Kitchen keeps breakfast, tacos, seafood, and daily plates fresh in Mountain View.",
 };
 
 const values: Array<[IconType, string, string]> = [
@@ -32,10 +32,10 @@ export default function AboutPage() {
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,#11100f_0%,rgba(17,16,15,.96)_46%,rgba(17,16,15,.56)_100%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Chef Tomas Tejeda</p>
-            <h1 className="mt-5 text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-7xl">A working truck with a real cook at the center.</h1>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">About the truck</p>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">A working truck with food built for real life.</h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Tomy&apos;s Kitchen is not trying to feel like a chain. It is a Mountain View food truck shaped by daily prep, regular customers, and Tomas cooking the food people actually come back for.
+              Tomy&apos;s Kitchen is built around quick lunch breaks, family pickup, and fresh food people actually come back for.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-[.82fr_1.18fr] sm:items-end">
@@ -92,7 +92,7 @@ export default function AboutPage() {
         <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-surface lg:grid-cols-[1fr_.9fr]">
           <Image src="/images/tomys-hero.png" alt="Tomy's Kitchen truck" width={1536} height={1024} sizes="(min-width: 1024px) 50vw, 100vw" className="h-80 w-full object-cover lg:h-full" />
           <div className="p-6 md:p-10">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Visit Tomas</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Visit the truck</p>
             <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary">Find the truck in Mountain View.</h2>
             <p className="mt-5 text-base font-semibold leading-7 text-muted">Stop by 239 W El Camino Real for breakfast, tacos, seafood, and daily plates from Tomy&apos;s Kitchen.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">

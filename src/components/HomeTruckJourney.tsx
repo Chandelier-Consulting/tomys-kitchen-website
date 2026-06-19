@@ -36,7 +36,7 @@ const serviceCards = [
 
 const steps = [
   ["01", "Pick the craving", "Breakfast, tacos, seafood cocktails, mains, drinks, and daily plates are grouped for quick scanning."],
-  ["02", "Call Tomas", "Use the phone CTA before driving over, especially for larger pickup orders or lunch rush timing."],
+  ["02", "Call ahead", "Use the phone CTA before driving over, especially for larger pickup orders or lunch rush timing."],
   ["03", "Find the truck", "Head to 239 W El Camino Real in Mountain View and keep the stop simple."],
 ];
 
@@ -92,8 +92,8 @@ export default function HomeTruckJourney() {
         <div className="mx-auto grid min-h-[calc(100vh-9rem)] max-w-6xl gap-10 lg:grid-cols-[0.98fr_1.02fr] lg:items-center">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Mountain View Mexican food truck</p>
-            <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.92] tracking-[-0.04em] text-white sm:text-7xl lg:text-8xl">
-              Breakfast, tacos, seafood, and Tomas at the window.
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
+              Breakfast, tacos, seafood, ready when you are.
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
               Tomy&apos;s Kitchen turns a quick El Camino stop into a reliable breakfast and lunch move: fresh plates, clear hours, easy pickup, and food worth coming back for.

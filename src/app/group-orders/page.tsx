@@ -25,7 +25,7 @@ const callScript = [
 ];
 
 const faqs = [
-  ["How much notice should I give?", "Call as early as you can. Same-day can work for simple orders, but larger pickup orders are easier when Tomas knows the headcount and timing before the rush."],
+  ["How much notice should I give?", "Call as early as you can. Same-day can work for simple orders, but larger pickup orders are easier when the truck knows the headcount and timing before the rush."],
   ["Can you help me choose?", "Yes. Start with headcount, pickup time, and whether the group wants breakfast, tacos, seafood, or a mixed order. The truck can steer you toward food that travels well."],
   ["Is this catering?", "This is built as practical group pickup first. It keeps the process simple for offices, crews, and families without requiring a full catering system."],
   ["What if I need it fast?", "Call instead of texting. Keep the order anchored around proven items like tacos, quesabirria, burritos, and drinks."],
@@ -56,9 +56,9 @@ export default function GroupOrdersPage() {
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[.94fr_1.06fr] lg:items-center">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Group pickup</p>
-            <h1 className="mt-5 text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-7xl">Feeding a team, crew, or family?</h1>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Feeding a team, crew, or family?</h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Call ahead and Tomas can help you build a practical pickup order around breakfast, tacos, quesabirria, seafood, drinks, and timing.
+              Call ahead and the truck can help you build a practical pickup order around breakfast, tacos, quesabirria, seafood, drinks, and timing.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
@@ -171,7 +171,7 @@ export default function GroupOrdersPage() {
         <div className="mx-auto grid max-w-6xl gap-5 rounded-[2rem] border border-primary/30 bg-primary/12 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
             <h2 className="text-3xl font-black text-secondary">Ready to plan pickup?</h2>
-            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call the truck with your headcount and pickup time. If it is busy, keep the order simple and Tomas will steer you toward what travels best.</p>
+            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call the truck with your headcount and pickup time. If it is busy, keep the order simple and the team will steer you toward what travels best.</p>
           </div>
           <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
         </div>

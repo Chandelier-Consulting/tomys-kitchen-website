@@ -27,7 +27,7 @@ export default function Footer() {
             Tomy&apos;s Kitchen
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/72">
-            Breakfast, tacos, seafood, and daily plates from Chef Tomas Tejeda&apos;s food truck on El Camino Real.
+            Breakfast, tacos, seafood, and daily plates from Tomy&apos;s Kitchen on El Camino Real.
           </p>
         </div>
 

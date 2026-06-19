@@ -22,11 +22,11 @@ export default function MenuPage() {
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Menu built for quick pickup</p>
-            <h1 className="mt-5 max-w-4xl text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-7xl">
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
               Pick fast. Call ahead. Eat well.
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Breakfast, tacos, seafood cocktails, mains, and drinks from Chef Tomas Tejeda&apos;s truck on El Camino Real.
+              Breakfast, tacos, seafood cocktails, mains, and drinks from Tomy&apos;s Kitchen on El Camino Real.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
@@ -93,7 +93,7 @@ export default function MenuPage() {
         <div className="mx-auto grid max-w-6xl gap-5 rounded-[2rem] border border-primary/30 bg-primary/12 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
             <h2 className="text-3xl font-black text-secondary">Ordering for a crew?</h2>
-            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call ahead so Tomas can time larger breakfast, taco, or lunch pickups without slowing the truck window.</p>
+            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call ahead so the truck can time larger breakfast, taco, or lunch pickups without slowing the window.</p>
           </div>
           <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
         </div>

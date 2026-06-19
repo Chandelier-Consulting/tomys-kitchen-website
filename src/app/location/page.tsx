@@ -31,7 +31,7 @@ export default function LocationPage() {
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Location & hours</p>
-            <h1 className="mt-5 text-5xl font-black leading-[0.92] tracking-[-0.04em] sm:text-7xl">Pull over on El Camino Real.</h1>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Pull over on El Camino Real.</h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
               Find Tomy&apos;s Kitchen in Mountain View for breakfast, tacos, seafood, and quick call-ahead pickup Monday through Saturday.
             </p>
