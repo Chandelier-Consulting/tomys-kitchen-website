@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaBars, FaPhone, FaTimes } from "react-icons/fa";
 import OperatingStatus from "./OperatingStatus";
+import { tomysImages } from "@/lib/site-content";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
-  { href: "/group-orders", label: "Group Orders" },
+  { href: "/group-orders", label: "Catering" },
   { href: "/about", label: "About" },
   { href: "/location", label: "Location" },
 ];
@@ -44,9 +46,10 @@ export default function Navbar() {
       <nav className="mx-auto flex h-18 max-w-6xl items-center justify-between px-5 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="min-w-0 text-lg font-extrabold tracking-normal text-white transition-colors sm:text-xl"
+          className="flex min-w-0 items-center gap-3 text-lg font-extrabold tracking-normal text-white transition-colors sm:text-xl"
           aria-label="Tomy's Kitchen home"
         >
+          <Image src={tomysImages.logo} alt="" width={44} height={44} priority className="h-11 w-11 rounded-full border border-white/20 object-cover" />
           <span className="text-primary">Tomy&apos;s</span> <span className="text-cream">Kitchen</span>
         </Link>
 

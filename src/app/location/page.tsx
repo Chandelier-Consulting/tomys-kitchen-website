@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import type { IconType } from "react-icons";
 import { FaClock, FaLocationDot, FaMapLocationDot, FaPhone, FaRoute } from "react-icons/fa6";
+import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import { tomysImages } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Location & Hours",
@@ -25,13 +27,13 @@ export default function LocationPage() {
     <>
       <section className="relative isolate overflow-hidden bg-[var(--kitchen-night)] px-5 pb-14 pt-28 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-20">
-          <Image src="/images/tomys-hero.png" alt="Tomy's Kitchen truck in Mountain View" fill priority sizes="100vw" className="object-cover opacity-40" />
+          <Image src={tomysImages.truck} alt="Tomy's Kitchen truck in Mountain View" fill priority sizes="100vw" className="object-cover opacity-40" />
         </div>
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,#11100f_0%,rgba(17,16,15,.96)_45%,rgba(17,16,15,.54)_100%)]" />
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Location & hours</p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Pull over on El Camino Real.</h1>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Find the red Tomy&apos;s truck on El Camino Real.</h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
               Find Tomy&apos;s Kitchen in Mountain View for breakfast, tacos, seafood, and quick call-ahead pickup Monday through Saturday.
             </p>
@@ -76,6 +78,25 @@ export default function LocationPage() {
               <p className="mt-3 text-sm font-semibold leading-6 text-muted">Call first so the truck can time food, avoid avoidable waits, and tell you what is best for the group size.</p>
               <a href="tel:+16502898628" className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call now</a>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-16 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[.85fr_1.15fr] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Before you go</p>
+            <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Look for the red truck and call if you are feeding more than a few people.</h2>
+            <p className="mt-5 text-base font-semibold leading-7 text-muted">
+              Ordering links can sit here once the live DoorDash, Uber Eats, Yelp, and Grubhub URLs are available.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-2">
+              <ManagedOrderLinks variant="light" />
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Image src={tomysImages.truck} alt="Tomy's Kitchen truck side" width={720} height={520} className="h-72 w-full rounded-3xl border border-border object-cover" />
+            <Image src={tomysImages.breakfastBurrito} alt="Tomy's Kitchen breakfast burrito" width={720} height={520} className="h-72 w-full rounded-3xl border border-border object-cover" />
           </div>
         </div>
       </section>

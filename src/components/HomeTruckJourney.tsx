@@ -1,36 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight, FaClock, FaLocationDot, FaPhone, FaStar } from "react-icons/fa6";
+import ManagedImage from "@/components/ManagedImage";
+import ManagedOrderLinks from "@/components/ManagedOrderLinks";
 import { featuredItems, menuCategories } from "@/lib/menu-data";
+import { displayPhone, tomysImages, tomysVideos } from "@/lib/site-content";
 
 const images = [
-  "/images/tomys-hero.png",
-  "/images/tomys-tacos.png",
-  "/images/tomys-quesabirria.png",
+  tomysImages.truck,
+  tomysImages.breakfastBurrito,
+  tomysImages.fishTacos,
 ];
 
 const proof = [
-  ["8:30 AM", "Breakfast starts"],
-  ["239 W", "El Camino Real"],
-  ["22+", "local reviews"],
-  ["6 days", "Mon-Sat service"],
+  ["Family owned", "local truck"],
+  ["Fresh daily", "breakfast and lunch"],
+  ["Best seller", "breakfast burrito"],
+  [displayPhone, "call catering"],
 ];
 
 const serviceCards = [
   {
-    title: "Call-ahead pickup",
-    body: "Fast decisions, clear menu sections, and a phone-first path for busy Mountain View lunch breaks.",
-    image: images[1],
+    title: "Family owned",
+    body: "A local kitchen built around regulars, honest portions, and food that still feels personal when the line gets busy.",
+    image: tomysImages.truck,
   },
   {
-    title: "Breakfast to lunch",
-    body: "Breakfast burritos, tacos, quesabirria, seafood plates, aguas frescas, and daily truck specials.",
-    image: images[2],
+    title: "Fresh Mexican focus",
+    body: "Breakfast burritos, fish tacos, shrimp tacos, tortas, seafood plates, aguas frescas, and daily truck specials.",
+    image: tomysImages.fishTacos,
   },
   {
-    title: "Group orders",
-    body: "A practical way for offices, crews, and families to plan pickup without digging through scattered info.",
-    image: images[0],
+    title: "Catering range",
+    body: "Chef Tomas can keep the Mexican menu front and center, then add Mediterranean, Italian, American, or Continental dishes for events.",
+    image: tomysImages.cateringSalmon,
   },
 ];
 
@@ -60,22 +63,28 @@ const reviewCards = [
 
 const quickPicks = [
   {
-    title: "Fast breakfast",
-    item: featuredItems[3],
-    note: "Best when someone wants a quick stop before work.",
-    image: images[1],
-  },
-  {
-    title: "Easy lunch",
+    title: "Best seller",
     item: featuredItems[0],
-    note: "The safest pick for a first-time customer.",
-    image: images[2],
+    note: "The breakfast burrito is the one to lead with for morning regulars.",
+    image: tomysImages.breakfastBurrito,
   },
   {
-    title: "Crew order",
+    title: "Seafood pick",
+    item: featuredItems[1],
+    note: "Fish tacos keep the Mexican focus and give the homepage a lighter lunch anchor.",
+    image: tomysImages.fishTacos,
+  },
+  {
+    title: "Fresh lunch",
     item: featuredItems[2],
-    note: "Good when the group wants something a little more filling.",
-    image: images[0],
+    note: "Shrimp tacos are easy to understand, easy to order, and strong for catering mix-ins.",
+    image: tomysImages.shrimpTacos,
+  },
+  {
+    title: "Big appetite",
+    item: featuredItems[3],
+    note: "A torta gives the page a hearty option without pulling attention from tacos.",
+    image: tomysImages.torta,
   },
 ];
 
@@ -84,19 +93,19 @@ export default function HomeTruckJourney() {
     <>
       <section className="relative isolate min-h-screen overflow-hidden bg-[var(--kitchen-night)] px-5 pb-16 pt-28 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-20">
-          <Image src={images[0]} alt="Tomy's Kitchen food truck counter" fill priority sizes="100vw" className="object-cover opacity-44" />
+          <video className="h-full w-full object-cover opacity-44" src={tomysVideos.promo} autoPlay muted loop playsInline poster={tomysImages.truck} />
         </div>
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,#11100f_0%,rgba(17,16,15,.96)_42%,rgba(17,16,15,.54)_100%)]" />
         <div className="absolute inset-0 -z-10 opacity-[0.14] [background-image:linear-gradient(rgba(255,247,236,.22)_1px,transparent_1px),linear-gradient(90deg,rgba(255,247,236,.16)_1px,transparent_1px)] [background-size:54px_54px]" />
 
         <div className="mx-auto grid min-h-[calc(100vh-9rem)] max-w-6xl gap-10 lg:grid-cols-[0.98fr_1.02fr] lg:items-center">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Mountain View Mexican food truck</p>
+          <div className="rise-in">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Family owned · fresh Mexican food truck</p>
             <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-              Breakfast, tacos, seafood, ready when you are.
+              Fresh breakfast burritos, tacos, and catering from Tomy&apos;s.
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Tomy&apos;s Kitchen turns a quick El Camino stop into a reliable breakfast and lunch move: fresh plates, clear hours, easy pickup, and food worth coming back for.
+              Tomy&apos;s Kitchen turns a quick El Camino stop into a reliable family-owned breakfast and lunch move, with catering for offices, crews, and events.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white shadow-[0_18px_50px_rgba(228,95,60,.28)] transition hover:bg-primary-hover">
@@ -106,24 +115,24 @@ export default function HomeTruckJourney() {
                 View menu <FaArrowRight aria-hidden />
               </Link>
               <Link href="/group-orders" className="inline-flex min-h-13 items-center justify-center rounded-full border border-white/22 px-7 text-base font-black text-white transition hover:bg-white/10">
-                Group orders
+                Catering
               </Link>
             </div>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-[0.82fr_1.18fr] sm:items-end">
+          <div className="float-in grid gap-4 sm:grid-cols-[0.82fr_1.18fr] sm:items-end">
             <div className="rounded-3xl border border-white/12 bg-white/8 p-3 backdrop-blur">
-              <Image src={images[1]} alt="Tomy's Kitchen tacos" width={900} height={1100} sizes="(min-width: 1024px) 22vw, 100vw" className="aspect-[4/5] rounded-2xl object-cover" />
+              <ManagedImage imageKey="Breakfast Burrito" fallback={images[1]} alt="Tomy's Kitchen breakfast burrito" className="aspect-[4/5] w-full rounded-2xl object-cover" />
             </div>
             <div className="rounded-3xl border border-white/12 bg-white/8 p-3 backdrop-blur">
-              <Image src={images[2]} alt="Tomy's Kitchen quesabirria combo" width={1200} height={900} sizes="(min-width: 1024px) 34vw, 100vw" className="aspect-[4/3] rounded-2xl object-cover" />
+              <ManagedImage imageKey="Fish Tacos (Tacos de Pescado)" fallback={images[2]} alt="Tomy's Kitchen fish tacos" className="aspect-[4/3] w-full rounded-2xl object-cover" />
               <div className="grid gap-3 p-4 sm:grid-cols-2">
                 <div>
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">Today&apos;s anchor</p>
-                  <p className="mt-1 text-xl font-black">Quesabirria combo</p>
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">Best seller</p>
+                  <p className="mt-1 text-xl font-black">Breakfast burrito</p>
                 </div>
                 <div className="flex items-center gap-2 text-sm font-bold text-white/72 sm:justify-end">
-                  <FaStar className="text-accent" aria-hidden /> local truck favorite
+                  <FaStar className="text-accent" aria-hidden /> fresh daily
                 </div>
               </div>
             </div>
@@ -134,7 +143,7 @@ export default function HomeTruckJourney() {
       <section className="border-y border-border bg-surface px-5 py-5 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {proof.map(([value, label]) => (
-            <div key={label} className="rounded-2xl border border-border bg-background px-5 py-4">
+            <div key={label} className="float-in rounded-2xl border border-border bg-background px-5 py-4">
               <p className="text-2xl font-black text-accent">{value}</p>
               <p className="mt-1 text-xs font-black uppercase tracking-[0.14em] text-muted">{label}</p>
             </div>
@@ -155,10 +164,10 @@ export default function HomeTruckJourney() {
               The most useful food site is the one that helps people choose fast. These are the items and order types that make the easiest path to the window.
             </p>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {quickPicks.map((pick) => (
-              <article key={pick.title} className="overflow-hidden rounded-3xl border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,.22)]">
-                <Image src={pick.image} alt={pick.item.name} width={900} height={650} sizes="(min-width: 768px) 33vw, 100vw" className="h-52 w-full object-cover" />
+              <article key={pick.title} className="float-in overflow-hidden rounded-3xl border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,.22)]">
+                <ManagedImage imageKey={pick.item.name} fallback={pick.image} alt={pick.item.name} className="h-52 w-full object-cover" />
                 <div className="p-6">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-accent">{pick.title}</p>
                   <h3 className="mt-2 text-2xl font-black text-secondary">{pick.item.name}</h3>
@@ -175,25 +184,50 @@ export default function HomeTruckJourney() {
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Useful first</p>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Fresh, family owned, flexible</p>
               <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">
                 Everything a hungry customer needs in two taps.
               </h2>
             </div>
             <p className="max-w-2xl text-lg font-semibold leading-8 text-muted">
-              The site sells the food, but more importantly it removes friction: what to order, when to come, where to park, and how to call ahead.
+              The Mexican truck menu stays the focus, while catering gives Tomas room to cook for more cuisines when the event needs it.
             </p>
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {serviceCards.map((card) => (
               <article key={card.title} className="overflow-hidden rounded-3xl border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,.22)]">
-                <Image src={card.image} alt="Tomy's Kitchen food and truck" width={900} height={650} sizes="(min-width: 768px) 33vw, 100vw" className="h-56 w-full object-cover" />
+                <ManagedImage imageKey={card.title} fallback={card.image} alt="Tomy's Kitchen food and truck" className="h-56 w-full object-cover" />
                 <div className="p-6">
                   <h3 className="text-2xl font-black text-secondary">{card.title}</h3>
                   <p className="mt-3 text-sm font-semibold leading-6 text-muted">{card.body}</p>
                 </div>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative isolate overflow-hidden px-5 py-16 text-white sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-20">
+          <video className="h-full w-full object-cover opacity-42" src={tomysVideos.catering} autoPlay muted loop playsInline poster={tomysImages.cateringSalmon} />
+        </div>
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,#11100f_0%,rgba(17,16,15,.94)_48%,rgba(17,16,15,.64)_100%)]" />
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Catering by Chef Tomas</p>
+            <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] sm:text-6xl">Mexican first. More cuisines when the event calls for it.</h2>
+            <p className="mt-5 text-base font-semibold leading-7 text-white/68">
+              For offices, family events, and private gatherings, Tomas can build around Mexican favorites and add Mediterranean, Italian, American, or Continental dishes.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link href="/group-orders" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Plan catering</Link>
+              <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/22 px-7 text-sm font-black text-white transition hover:bg-white/10">Call {displayPhone}</a>
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[tomysImages.cateringSalmon, tomysImages.cateringPasta, tomysImages.cateringSteak].map((src) => (
+              <ManagedImage key={src} imageKey="Catering" fallback={src} alt="Tomy's Kitchen catering dish" className="h-72 w-full rounded-3xl border border-white/12 object-cover shadow-[0_24px_80px_rgba(0,0,0,.32)]" />
             ))}
           </div>
         </div>
@@ -211,13 +245,13 @@ export default function HomeTruckJourney() {
               Open full menu
             </Link>
             <Link href="/group-orders" className="ml-3 mt-7 inline-flex min-h-12 items-center justify-center rounded-full border border-[#eadcc9] px-7 text-sm font-black text-[#171615] transition hover:border-primary hover:text-primary">
-              Plan group pickup
+              Plan catering
             </Link>
           </div>
           <div className="grid gap-4">
             {featuredItems.map((item, index) => (
               <article key={item.name} className="grid gap-4 rounded-3xl border border-[#eadcc9] bg-white p-4 shadow-[0_18px_45px_rgba(68,42,18,.08)] sm:grid-cols-[160px_1fr_auto] sm:items-center">
-                <Image src={images[index % images.length]} alt={item.name} width={320} height={220} className="h-32 w-full rounded-2xl object-cover sm:h-28" />
+                  <ManagedImage imageKey={item.name} fallback={images[index % images.length]} alt={item.name} className="h-32 w-full rounded-2xl object-cover sm:h-28" />
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-primary">{menuCategories.find((category) => category.items.includes(item))?.name}</p>
                   <h3 className="mt-1 text-2xl font-black">{item.name}</h3>
@@ -261,7 +295,7 @@ export default function HomeTruckJourney() {
       <section className="px-5 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
           <div className="overflow-hidden rounded-3xl border border-border bg-surface">
-            <Image src={images[0]} alt="Tomy's Kitchen truck" width={1536} height={1024} sizes="(min-width: 1024px) 50vw, 100vw" className="h-[430px] w-full object-cover" />
+            <Image src={tomysImages.truck} alt="Tomy's Kitchen truck" width={1536} height={1024} sizes="(min-width: 1024px) 50vw, 100vw" className="h-[430px] w-full object-cover" />
           </div>
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">How it works</p>
@@ -292,6 +326,15 @@ export default function HomeTruckJourney() {
           <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
             <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
             <Link href="/location" className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/20 px-7 text-sm font-black text-white transition hover:bg-white/10">Get directions</Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-border bg-surface px-5 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+          <p className="text-sm font-black uppercase tracking-[0.16em] text-muted">Online ordering links</p>
+          <div className="flex flex-wrap gap-2">
+            <ManagedOrderLinks />
           </div>
         </div>
       </section>

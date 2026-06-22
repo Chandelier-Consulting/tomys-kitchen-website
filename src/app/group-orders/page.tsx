@@ -5,16 +5,17 @@ import type { IconType } from "react-icons";
 import { FaBriefcase, FaCalendarDay, FaPhone, FaUsers } from "react-icons/fa6";
 import GroupOrderPlanner from "./GroupOrderPlanner";
 import { featuredItems } from "@/lib/menu-data";
+import { displayPhone, tomysImages, tomysVideos } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-  title: "Group Orders",
-  description: "Plan call-ahead breakfast, taco, seafood, and lunch pickups for teams, crews, and families from Tomy's Kitchen in Mountain View.",
+  title: "Catering",
+  description: "Plan catering and call-ahead breakfast, taco, seafood, and lunch pickups from Chef Tomas at Tomy's Kitchen in Mountain View.",
 };
 
 const occasions: Array<[IconType, string, string]> = [
-  [FaBriefcase, "Office breakfast", "Breakfast burritos, egg sandwiches, coffee runs, and easy pickup timing for morning teams."],
-  [FaUsers, "Crew lunch", "Tacos, quesabirria, fajitas, tortas, and drinks packed for people who need food fast."],
-  [FaCalendarDay, "Family pickup", "Seafood cocktails, mains, tacos, and aguas frescas when one person is ordering for the table."],
+  [FaBriefcase, "Office catering", "Breakfast burritos, tacos, seafood, and mixed trays timed for teams."],
+  [FaUsers, "Crew lunch", "Mexican favorites first, with practical portions packed for people who need food fast."],
+  [FaCalendarDay, "Private events", "Mediterranean, Italian, American, and Continental dishes available when the event needs more range."],
 ];
 
 const callScript = [
@@ -50,19 +51,19 @@ export default function GroupOrdersPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
       <section className="relative isolate overflow-hidden bg-[var(--kitchen-night)] px-5 pb-16 pt-28 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-20">
-          <Image src="/images/tomys-tacos.png" alt="Tomy's Kitchen tacos for group pickup" fill priority sizes="100vw" className="object-cover opacity-38" />
+          <video className="h-full w-full object-cover opacity-38" src={tomysVideos.catering} autoPlay muted loop playsInline poster={tomysImages.cateringSalmon} />
         </div>
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,#11100f_0%,rgba(17,16,15,.96)_45%,rgba(17,16,15,.54)_100%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[.94fr_1.06fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Group pickup</p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Feeding a team, crew, or family?</h1>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Catering and group pickup</p>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Fresh food for teams, crews, and events.</h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Call ahead and the truck can help you build a practical pickup order around breakfast, tacos, quesabirria, seafood, drinks, and timing.
+              Call Chef Tomas to build around Mexican favorites, then add Mediterranean, Italian, American, or Continental dishes when the event calls for it.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
-                Call for group order <FaPhone aria-hidden />
+                Call for catering <FaPhone aria-hidden />
               </a>
               <Link href="/menu" className="inline-flex min-h-13 items-center justify-center rounded-full border border-white/24 px-7 text-base font-black text-white transition hover:bg-white/10">
                 Check menu first
@@ -71,10 +72,10 @@ export default function GroupOrdersPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-[.82fr_1.18fr] sm:items-end">
             <div className="overflow-hidden rounded-3xl border border-white/12 bg-white/8 p-2">
-              <Image src="/images/tomys-hero.png" alt="Tomy's Kitchen truck window" width={760} height={980} sizes="(min-width: 1024px) 22vw, 100vw" className="aspect-[4/5] rounded-2xl object-cover" />
+              <Image src={tomysImages.truck} alt="Tomy's Kitchen truck" width={760} height={980} sizes="(min-width: 1024px) 22vw, 100vw" className="aspect-[4/5] rounded-2xl object-cover" />
             </div>
             <div className="overflow-hidden rounded-3xl border border-white/12 bg-white/8 p-2">
-              <Image src="/images/tomys-quesabirria.png" alt="Quesabirria combo for pickup" width={980} height={760} sizes="(min-width: 1024px) 34vw, 100vw" className="aspect-[4/3] rounded-2xl object-cover" />
+              <Image src={tomysImages.cateringPasta} alt="Catering pasta by Chef Tomas" width={980} height={760} sizes="(min-width: 1024px) 34vw, 100vw" className="aspect-[4/3] rounded-2xl object-cover" />
             </div>
           </div>
         </div>
@@ -84,11 +85,11 @@ export default function GroupOrdersPage() {
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 lg:grid-cols-[.82fr_1.18fr] lg:items-end">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Built for bigger tickets</p>
-              <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Make large pickups easier to say yes to.</h2>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Bigger orders, clear phone path</p>
+              <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Make catering easy to start.</h2>
             </div>
             <p className="max-w-2xl text-lg font-semibold leading-8 text-muted">
-              This page gives customers a clear path to higher-value orders without making the public site feel like an admin tool.
+              This page gives customers a clear path to higher-value orders while keeping the truck&apos;s Mexican focus obvious.
             </p>
           </div>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -106,7 +107,7 @@ export default function GroupOrdersPage() {
       <section className="bg-cream px-5 py-16 text-[#171615] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[.8fr_1.2fr]">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Easy call script</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-primary">Easy catering call</p>
             <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] sm:text-6xl">Know what to ask before calling.</h2>
             <p className="mt-5 text-base font-semibold leading-7 text-[#6e5f4d]">
               The fastest group orders start with a few simple details. Call with these ready and the truck can guide the rest.
@@ -170,10 +171,10 @@ export default function GroupOrdersPage() {
       <section className="px-5 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl gap-5 rounded-[2rem] border border-primary/30 bg-primary/12 p-6 md:grid-cols-[1fr_auto] md:items-center md:p-8">
           <div>
-            <h2 className="text-3xl font-black text-secondary">Ready to plan pickup?</h2>
-            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call the truck with your headcount and pickup time. If it is busy, keep the order simple and the team will steer you toward what travels best.</p>
+            <h2 className="text-3xl font-black text-secondary">Ready to plan catering?</h2>
+            <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call with your headcount, pickup time, cuisine direction, and budget. Tomas will steer you toward what travels best.</p>
           </div>
-          <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
+          <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call {displayPhone}</a>
         </div>
       </section>
     </>

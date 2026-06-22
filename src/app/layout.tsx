@@ -13,7 +13,7 @@ const inter = Inter({
 
 const businessName = "Tomy's Kitchen";
 const description =
-  "Authentic Mexican street food, fresh breakfast, tacos, seafood, and daily specials from Chef Tomas Tejeda in Mountain View.";
+  "Family-owned Mexican food truck serving fresh breakfast burritos, tacos, seafood, catering, and daily specials from Chef Tomas Tejeda in Mountain View.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tomyskitchen.example"),
@@ -49,7 +49,7 @@ const localBusinessSchema = {
   image: "https://tomyskitchen.example/opengraph-image",
   telephone: "+16502898628",
   priceRange: "$$",
-  servesCuisine: "Mexican",
+  servesCuisine: ["Mexican", "Mediterranean", "Italian", "American", "Continental"],
   founder: {
     "@type": "Person",
     name: "Tomas Tejeda",

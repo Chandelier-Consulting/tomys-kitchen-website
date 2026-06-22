@@ -19,6 +19,10 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  if (process.env.DASHBOARD_BASIC_AUTH !== "true") {
+    return NextResponse.next();
+  }
+
   const authHeader = request.headers.get("authorization");
 
   if (!authHeader?.startsWith("Basic ")) {

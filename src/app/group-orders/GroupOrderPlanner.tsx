@@ -14,7 +14,7 @@ export default function GroupOrderPlanner() {
 
   const message = useMemo(() => {
     return [
-      "Hi Tomy's Kitchen, I want to plan a group pickup.",
+      "Hi Tomy's Kitchen, I want to plan catering or a group pickup.",
       name ? `Name: ${name}` : "Name:",
       `Headcount: ${headcount}`,
       `Pickup time: ${pickupTime}`,
@@ -29,10 +29,10 @@ export default function GroupOrderPlanner() {
     <section className="px-5 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-border bg-surface p-5 shadow-[0_24px_80px_rgba(0,0,0,.22)] lg:grid-cols-[.82fr_1.18fr] lg:p-8">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Fast inquiry builder</p>
-          <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Turn a vague group order into a clear text.</h2>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Fast catering inquiry</p>
+          <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Turn a vague event order into a clear text.</h2>
           <p className="mt-5 text-base font-semibold leading-7 text-muted">
-            Fill in the basics and send the truck a clean SMS. No login, no waiting, no complicated catering system.
+            Fill in the basics and send Tomas a clean SMS. No login, no waiting, no complicated catering system.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
             <a href={smsHref} className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">

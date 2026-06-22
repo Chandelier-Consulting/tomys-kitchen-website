@@ -1,8 +1,15 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from "react";
 import { FaArrowTrendUp, FaBowlFood, FaBullhorn, FaCheck, FaClock, FaPhone, FaStar, FaTriangleExclamation } from "react-icons/fa6";
+import type { User } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { auth, db, firebaseReady, storage } from "@/lib/firebase-client";
 import type { MenuCategory } from "@/lib/menu-data";
+import { displayPhone, orderLinks, tomysImages } from "@/lib/site-content";
 
 const kpis = [
   { label: "Estimated daily revenue", value: "$1,420", delta: "+12% vs last Tue", icon: FaArrowTrendUp },
@@ -78,8 +85,17 @@ const responseScripts = [
   "Do you want breakfast, tacos, seafood, or a mixed order?",
 ];
 
-const tabs = ["Today", "Leads", "Reviews"] as const;
+const tabs = ["Today", "Leads", "Reviews", "Content"] as const;
 type Tab = (typeof tabs)[number];
+
+const editableImages = [
+  ["Logo", tomysImages.logo],
+  ["Truck", tomysImages.truck],
+  ["Breakfast Burrito", tomysImages.breakfastBurrito],
+  ["Fish Tacos (Tacos de Pescado)", tomysImages.fishTacos],
+  ["Shrimp Tacos", tomysImages.shrimpTacos],
+  ["Catering", tomysImages.cateringSalmon],
+] as const;
 
 export default function DashboardClient({ menuCategories }: { menuCategories: MenuCategory[] }) {
   const [activeTab, setActiveTab] = useState<Tab>("Today");
@@ -88,6 +104,13 @@ export default function DashboardClient({ menuCategories }: { menuCategories: Me
   const [ownerNote, setOwnerNote] = useState(defaultNote);
   const [completed, setCompleted] = useState<Set<string>>(new Set());
   const [closedItems, setClosedItems] = useState<Set<string>>(new Set());
+  const [draftLinks, setDraftLinks] = useState(orderLinks);
+  const [imagePreviews, setImagePreviews] = useState<Record<string, string>>({});
+  const [managerUser, setManagerUser] = useState<User | null>(null);
+  const [managerEmail, setManagerEmail] = useState("");
+  const [managerPassword, setManagerPassword] = useState("");
+  const [contentStatus, setContentStatus] = useState("");
+  const [newItem, setNewItem] = useState({ name: "", price: "", category: "Breakfast", description: "" });
 
   const openLeadValue = useMemo(() => {
     return leadInbox.reduce((sum, lead) => sum + Number(lead.value.replace(/[^0-9]/g, "")), 0);
@@ -104,10 +127,17 @@ export default function DashboardClient({ menuCategories }: { menuCategories: Me
   }, []);
 
   useEffect(() => {
+    if (!auth) return;
+    return onAuthStateChanged(auth, setManagerUser);
+  }, []);
+
+  useEffect(() => {
     try {
       const storedNote = window.localStorage.getItem("tomys-dashboard-note");
       const storedPrep = JSON.parse(window.localStorage.getItem("tomys-dashboard-prep") ?? "[]") as string[];
       const storedClosing = JSON.parse(window.localStorage.getItem("tomys-dashboard-closing") ?? "[]") as string[];
+      const storedLinks = JSON.parse(window.localStorage.getItem("tomys-order-links") ?? "null") as typeof orderLinks | null;
+      const storedImages = JSON.parse(window.localStorage.getItem("tomys-image-previews") ?? "{}") as Record<string, string>;
 
       if (storedNote) {
         setOwnerNote(storedNote);
@@ -115,6 +145,8 @@ export default function DashboardClient({ menuCategories }: { menuCategories: Me
 
       setCompleted(new Set(storedPrep));
       setClosedItems(new Set(storedClosing));
+      if (storedLinks) setDraftLinks(storedLinks);
+      setImagePreviews(storedImages);
     } finally {
       setHydrated(true);
     }
@@ -156,6 +188,16 @@ export default function DashboardClient({ menuCategories }: { menuCategories: Me
     window.localStorage.setItem("tomys-dashboard-note", ownerNote);
   }, [ownerNote, hydrated]);
 
+  useEffect(() => {
+    if (!hydrated) return;
+    window.localStorage.setItem("tomys-order-links", JSON.stringify(draftLinks));
+  }, [draftLinks, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    window.localStorage.setItem("tomys-image-previews", JSON.stringify(imagePreviews));
+  }, [imagePreviews, hydrated]);
+
   const copyText = async (label: string, value: string) => {
     try {
       await navigator.clipboard.writeText(value);
@@ -175,6 +217,52 @@ export default function DashboardClient({ menuCategories }: { menuCategories: Me
       }
       return next;
     });
+  };
+
+  const previewImage = (label: string, file: File | undefined) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setImagePreviews((current) => ({ ...current, [label]: String(reader.result) }));
+    reader.readAsDataURL(file);
+  };
+
+  const contentExport = JSON.stringify({ phone: displayPhone, orderLinks: draftLinks, imagePreviews: Object.keys(imagePreviews) }, null, 2);
+
+  const managerLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!auth) return setContentStatus("Add Firebase environment variables before logging in.");
+    try {
+      await signInWithEmailAndPassword(auth, managerEmail, managerPassword);
+      setContentStatus("Manager login saved.");
+    } catch (error) {
+      setContentStatus(error instanceof Error ? error.message : "Login failed.");
+    }
+  };
+
+  const saveOrderLinks = async () => {
+    if (!db) return setContentStatus("Firebase is not configured.");
+    await setDoc(doc(db, "siteContent", "settings"), { orderLinks: draftLinks, updatedAt: serverTimestamp() }, { merge: true });
+    setContentStatus("Ordering links saved to Firestore.");
+  };
+
+  const replaceImage = async (label: string, file: File | undefined) => {
+    if (!file || !storage || !db) return setContentStatus("Choose an image after Firebase is configured.");
+    const extension = file.name.split(".").pop() || "jpg";
+    const path = `site-images/${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.${extension}`;
+    const uploaded = await uploadBytes(ref(storage, path), file);
+    const url = await getDownloadURL(uploaded.ref);
+    await setDoc(doc(db, "siteContent", "settings"), { images: { [label]: url }, updatedAt: serverTimestamp() }, { merge: true });
+    setImagePreviews((current) => ({ ...current, [label]: url }));
+    setContentStatus(`${label} image saved to Firebase Storage.`);
+  };
+
+  const addMenuItem = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!db || !newItem.name.trim()) return setContentStatus("Add a name after Firebase is configured.");
+    const itemRef = doc(collection(db, "menuItems"));
+    await setDoc(itemRef, { ...newItem, visible: true, updatedAt: serverTimestamp() });
+    setNewItem({ name: "", price: "", category: "Breakfast", description: "" });
+    setContentStatus("Menu item saved to Firestore.");
   };
 
   return (
@@ -338,6 +426,130 @@ export default function DashboardClient({ menuCategories }: { menuCategories: Me
               ))}
             </div>
           </article>
+        </section>
+      ) : null}
+
+      {activeTab === "Content" ? (
+        <section className="mt-8 grid gap-6">
+          <article className="rounded-3xl border border-white/10 bg-white/[0.06] p-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">Manager login</p>
+                <h2 className="mt-2 text-3xl font-black">Edit photos, menu items, and ordering links</h2>
+                <p className="mt-3 max-w-3xl text-sm font-semibold leading-6 text-white/58">
+                  Managers sign in with Firebase Auth. Images save to Firebase Storage; menu items and links save to Firestore.
+                </p>
+              </div>
+              {managerUser ? (
+                <button type="button" onClick={() => auth && signOut(auth)} className="rounded-full border border-white/10 px-5 py-3 text-sm font-black text-white/72 transition hover:text-white">
+                  Sign out
+                </button>
+              ) : null}
+            </div>
+
+            {!firebaseReady ? (
+              <div className="mt-6 rounded-2xl border border-primary/30 bg-primary/12 p-4 text-sm font-bold leading-6 text-primary">
+                Firebase is wired, but env vars are missing. Add NEXT_PUBLIC_FIREBASE_* values from the Firebase web app settings.
+              </div>
+            ) : null}
+
+            {!managerUser ? (
+              <form onSubmit={managerLogin} className="mt-6 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+                <label className="grid gap-2 text-sm font-black">
+                  Email
+                  <input value={managerEmail} onChange={(event) => setManagerEmail(event.target.value)} type="email" className="min-h-12 rounded-2xl border border-white/10 bg-black/18 px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white/32 focus:border-primary/40" />
+                </label>
+                <label className="grid gap-2 text-sm font-black">
+                  Password
+                  <input value={managerPassword} onChange={(event) => setManagerPassword(event.target.value)} type="password" className="min-h-12 rounded-2xl border border-white/10 bg-black/18 px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white/32 focus:border-primary/40" />
+                </label>
+                <button type="submit" className="min-h-12 rounded-full bg-primary px-6 text-sm font-black text-white transition hover:bg-primary-hover">
+                  Log in
+                </button>
+              </form>
+            ) : null}
+
+            {contentStatus ? <p className="mt-4 text-sm font-bold text-accent">{contentStatus}</p> : null}
+          </article>
+
+          {managerUser ? (
+            <div className="grid gap-6 lg:grid-cols-[1fr_1fr]">
+              <article className="rounded-3xl border border-white/10 bg-white/[0.06] p-6">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">Replace image</p>
+                <h2 className="mt-2 text-3xl font-black">Swap site photos</h2>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {editableImages.map(([label, src]) => (
+                    <label key={label} className="grid gap-3 rounded-2xl border border-white/10 bg-black/18 p-3 text-sm font-black">
+                      <img src={imagePreviews[label] || src} alt="" className="h-36 w-full rounded-xl object-cover" />
+                      {label}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(event) => {
+                          previewImage(label, event.target.files?.[0]);
+                          void replaceImage(label, event.target.files?.[0]);
+                        }}
+                        className="text-xs font-semibold text-white/58 file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-3 file:py-2 file:text-xs file:font-black file:text-white"
+                      />
+                    </label>
+                  ))}
+                </div>
+              </article>
+
+              <article className="rounded-3xl border border-white/10 bg-white/[0.06] p-6">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">Ordering links</p>
+                <h2 className="mt-2 text-3xl font-black">Update delivery buttons</h2>
+                <div className="mt-6 grid gap-4">
+                  {draftLinks.map((link, index) => (
+                    <label key={link.label} className="grid gap-2 text-sm font-black">
+                      {link.label}
+                      <input
+                        value={link.href}
+                        onChange={(event) => setDraftLinks((current) => current.map((item, itemIndex) => itemIndex === index ? { ...item, href: event.target.value } : item))}
+                        placeholder={`${link.label} URL`}
+                        className="min-h-12 rounded-2xl border border-white/10 bg-black/18 px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white/32 focus:border-primary/40"
+                      />
+                    </label>
+                  ))}
+                </div>
+                <button type="button" onClick={() => void saveOrderLinks()} className="mt-6 rounded-full bg-primary px-6 py-3 text-sm font-black text-white transition hover:bg-primary-hover">
+                  Save links
+                </button>
+              </article>
+
+              <article className="rounded-3xl border border-white/10 bg-white/[0.06] p-6 lg:col-span-2">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-accent">Add menu item</p>
+                <h2 className="mt-2 text-3xl font-black">Add a new dish</h2>
+                <form onSubmit={addMenuItem} className="mt-6 grid gap-4 md:grid-cols-2">
+                  <label className="grid gap-2 text-sm font-black">
+                    Item name
+                    <input value={newItem.name} onChange={(event) => setNewItem((item) => ({ ...item, name: event.target.value }))} className="min-h-12 rounded-2xl border border-white/10 bg-black/18 px-4 text-sm font-semibold text-white outline-none transition focus:border-primary/40" />
+                  </label>
+                  <label className="grid gap-2 text-sm font-black">
+                    Price
+                    <input value={newItem.price} onChange={(event) => setNewItem((item) => ({ ...item, price: event.target.value }))} placeholder="$12.00" className="min-h-12 rounded-2xl border border-white/10 bg-black/18 px-4 text-sm font-semibold text-white outline-none transition placeholder:text-white/32 focus:border-primary/40" />
+                  </label>
+                  <label className="grid gap-2 text-sm font-black">
+                    Category
+                    <select value={newItem.category} onChange={(event) => setNewItem((item) => ({ ...item, category: event.target.value }))} className="min-h-12 rounded-2xl border border-white/10 bg-black/18 px-4 text-sm font-semibold text-white outline-none transition focus:border-primary/40">
+                      {menuCategories.map((category) => <option key={category.name}>{category.name}</option>)}
+                      <option>Catering</option>
+                    </select>
+                  </label>
+                  <label className="grid gap-2 text-sm font-black md:col-span-2">
+                    Description
+                    <textarea value={newItem.description} onChange={(event) => setNewItem((item) => ({ ...item, description: event.target.value }))} rows={4} className="rounded-2xl border border-white/10 bg-black/18 px-4 py-3 text-sm font-semibold text-white outline-none transition focus:border-primary/40" />
+                  </label>
+                  <button type="submit" className="min-h-12 rounded-full bg-primary px-6 text-sm font-black text-white transition hover:bg-primary-hover">
+                    Save menu item
+                  </button>
+                  <button type="button" onClick={() => copyText("Content export", contentExport)} className="min-h-12 rounded-full border border-white/10 px-6 text-sm font-black text-white/72 transition hover:text-white">
+                    {copiedLabel === "Content export" ? "Copied export" : "Copy backup JSON"}
+                  </button>
+                </form>
+              </article>
+            </div>
+          ) : null}
         </section>
       ) : null}
 

@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaLocationDot, FaPhone } from "react-icons/fa6";
+import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import { displayPhone } from "@/lib/site-content";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/menu", label: "Menu" },
-  { href: "/group-orders", label: "Group Orders" },
+  { href: "/group-orders", label: "Catering" },
   { href: "/about", label: "About" },
   { href: "/location", label: "Location" },
 ];
@@ -27,8 +29,11 @@ export default function Footer() {
             Tomy&apos;s Kitchen
           </Link>
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/72">
-            Breakfast, tacos, seafood, and daily plates from Tomy&apos;s Kitchen on El Camino Real.
+            Family owned, fresh Mexican breakfast, tacos, seafood, catering, and daily plates on El Camino Real.
           </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <ManagedOrderLinks variant="footer" />
+          </div>
         </div>
 
         <div>
@@ -51,7 +56,7 @@ export default function Footer() {
             </p>
             <a className="flex gap-3 hover:text-white" href="tel:+16502898628">
               <FaPhone className="mt-1 shrink-0 text-primary" aria-hidden />
-              <span>(650) 289-8628</span>
+              <span>{displayPhone}</span>
             </a>
             <a
               className="flex gap-3 hover:text-white"

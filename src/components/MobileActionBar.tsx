@@ -13,7 +13,7 @@ const actions = [
     icon: FaLocationDot,
     external: true,
   },
-  { href: "/group-orders", label: "Groups", icon: FaUsers },
+  { href: "/group-orders", label: "Cater", icon: FaUsers },
 ];
 
 export default function MobileActionBar() {

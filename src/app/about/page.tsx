@@ -3,17 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import type { IconType } from "react-icons";
 import { FaBowlFood, FaHeart, FaLeaf, FaPeopleCarryBox } from "react-icons/fa6";
+import { tomysImages } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Learn how Tomy's Kitchen keeps breakfast, tacos, seafood, and daily plates fresh in Mountain View.",
+  description: "Learn about Chef Tomas Tejeda, the family-owned Tomy's Kitchen food truck, and catering across Mexican, Mediterranean, Italian, American, and Continental dishes.",
 };
 
 const values: Array<[IconType, string, string]> = [
   [FaLeaf, "Fresh prep", "Produce, seafood, tortillas, salsas, and proteins are handled for the day so plates land bright and generous."],
   [FaHeart, "Regulars matter", "The truck is built for people on lunch breaks, work routes, and family pickup runs who want food that feels personal."],
-  [FaBowlFood, "Broad but practical", "Breakfast, tacos, seafood, mains, and drinks cover cravings without turning the kitchen into a slow restaurant."],
-  [FaPeopleCarryBox, "Pickup friendly", "The experience is designed around quick ordering, call-ahead timing, and easy El Camino access."],
+  [FaBowlFood, "Mexican first", "Breakfast burritos, tacos, seafood, mains, and drinks stay at the center of the truck menu."],
+  [FaPeopleCarryBox, "Catering range", "For events, Tomas can also cook Mediterranean, Italian, American, and Continental dishes."],
 ];
 
 const rhythm: Array<[string, string]> = [
@@ -27,23 +28,23 @@ export default function AboutPage() {
     <>
       <section className="relative isolate overflow-hidden bg-[var(--kitchen-night)] px-5 pb-16 pt-28 text-white sm:px-6 lg:px-8">
         <div className="absolute inset-0 -z-20">
-          <Image src="/images/tomys-hero.png" alt="Tomy's Kitchen truck window" fill priority sizes="100vw" className="object-cover opacity-38" />
+          <Image src={tomysImages.truck} alt="Tomy's Kitchen truck" fill priority sizes="100vw" className="object-cover opacity-38" />
         </div>
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,#11100f_0%,rgba(17,16,15,.96)_46%,rgba(17,16,15,.56)_100%)]" />
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">About the truck</p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">A working truck with food built for real life.</h1>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">About Chef Tomas</p>
+            <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Family owned, fresh, and built for real life.</h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Tomy&apos;s Kitchen is built around quick lunch breaks, family pickup, and fresh food people actually come back for.
+              Tomy&apos;s Kitchen is built around Chef Tomas Tejeda&apos;s fresh Mexican food, quick lunch breaks, family pickup, and catering that can stretch into more cuisines for private events.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-[.82fr_1.18fr] sm:items-end">
             <div className="overflow-hidden rounded-3xl border border-white/12 bg-white/8 p-2">
-              <Image src="/images/tomys-tacos.png" alt="Tomy's Kitchen tacos" width={760} height={980} sizes="(min-width: 1024px) 22vw, 100vw" className="aspect-[4/5] rounded-2xl object-cover" />
+              <Image src={tomysImages.logo} alt="Tomy's Kitchen logo" width={760} height={980} sizes="(min-width: 1024px) 22vw, 100vw" className="aspect-[4/5] rounded-2xl bg-white object-contain" />
             </div>
             <div className="overflow-hidden rounded-3xl border border-white/12 bg-white/8 p-2">
-              <Image src="/images/tomys-quesabirria.png" alt="Quesabirria combo" width={980} height={760} sizes="(min-width: 1024px) 34vw, 100vw" className="aspect-[4/3] rounded-2xl object-cover" />
+              <Image src={tomysImages.cateringSalmon} alt="Catering dish by Chef Tomas" width={980} height={760} sizes="(min-width: 1024px) 34vw, 100vw" className="aspect-[4/3] rounded-2xl object-cover" />
             </div>
           </div>
         </div>
@@ -69,7 +70,7 @@ export default function AboutPage() {
       <section className="bg-cream px-5 py-16 text-[#171615] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <blockquote className="max-w-5xl text-4xl font-black leading-[1.02] tracking-[-0.04em] sm:text-6xl">
-            The food is direct: warm tortillas, bright salsa, generous plates, and enough care to make a quick stop feel personal.
+            The truck is Mexican first, but catering can move with the event: Mediterranean, Italian, American, and Continental dishes alongside the favorites people already know.
           </blockquote>
         </div>
       </section>
@@ -90,14 +91,14 @@ export default function AboutPage() {
 
       <section className="px-5 pb-16 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-6xl overflow-hidden rounded-[2rem] border border-border bg-surface lg:grid-cols-[1fr_.9fr]">
-          <Image src="/images/tomys-hero.png" alt="Tomy's Kitchen truck" width={1536} height={1024} sizes="(min-width: 1024px) 50vw, 100vw" className="h-80 w-full object-cover lg:h-full" />
+          <Image src={tomysImages.truck} alt="Tomy's Kitchen truck" width={1536} height={1024} sizes="(min-width: 1024px) 50vw, 100vw" className="h-80 w-full object-cover lg:h-full" />
           <div className="p-6 md:p-10">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Visit the truck</p>
-            <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary">Find the truck in Mountain View.</h2>
-            <p className="mt-5 text-base font-semibold leading-7 text-muted">Stop by 239 W El Camino Real for breakfast, tacos, seafood, and daily plates from Tomy&apos;s Kitchen.</p>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Catering and pickup</p>
+            <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary">Talk through the food with Tomas.</h2>
+            <p className="mt-5 text-base font-semibold leading-7 text-muted">Stop by 239 W El Camino Real for breakfast and lunch, or call ahead for catering built around Mexican favorites and the cuisines your event needs.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/menu" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Explore menu</Link>
-              <Link href="/location" className="inline-flex min-h-12 items-center justify-center rounded-full border border-border px-7 text-sm font-black text-secondary transition hover:border-primary hover:text-primary">Location & hours</Link>
+              <Link href="/group-orders" className="inline-flex min-h-12 items-center justify-center rounded-full border border-border px-7 text-sm font-black text-secondary transition hover:border-primary hover:text-primary">Catering</Link>
             </div>
           </div>
         </div>

@@ -26,7 +26,7 @@ export const menuCategories: MenuCategory[] = [
       {
         name: "Breakfast Burrito",
         price: "$10.00",
-        description: "Scrambled eggs, potatoes, cheese, and salsa wrapped in a flour tortilla",
+        description: "Best seller with eggs, potatoes, cheese, salsa, and your choice of meat wrapped in a flour tortilla",
       },
     ],
   },
@@ -138,8 +138,8 @@ export const menuCategories: MenuCategory[] = [
 ];
 
 export const featuredItems = [
-  menuCategories[2].items[0],
+  menuCategories[0].items[2],
   menuCategories[1].items[0],
-  menuCategories[2].items[4],
-  menuCategories[3].items[2],
+  menuCategories[1].items[1],
+  menuCategories[2].items[2],
 ];
