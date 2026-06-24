@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaPhone } from "react-icons/fa6";
 import ManagedMenuSections from "@/components/ManagedMenuSections";
-import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import OrderOnlineButton from "@/components/OrderOnlineButton";
 import Reveal from "@/components/Reveal";
 import { menuCategories } from "@/lib/menu-data";
-import { orderLinks, tomysImages } from "@/lib/site-content";
+import { tomysImages } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Menu",
@@ -33,15 +33,12 @@ export default function MenuPage() {
               Order online for pickup or delivery, or call ahead and swing by the truck on El Camino Real for a fresh meal.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={orderLinks[0].href} target="_blank" rel="noreferrer" className="inline-flex min-h-13 items-center justify-center rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
-                Order online
-              </a>
+              <OrderOnlineButton
+                className="inline-flex min-h-13 items-center justify-center rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover"
+              />
               <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-white/24 px-7 text-base font-black text-white transition hover:bg-white/10">
                 Call order <FaPhone aria-hidden />
               </a>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              <ManagedOrderLinks variant="light" />
             </div>
           </Reveal>
           <div className="grid grid-cols-3 gap-3">
@@ -56,9 +53,6 @@ export default function MenuPage() {
 
       <section className="sticky top-[72px] z-30 border-y border-border bg-background/92 px-5 py-4 backdrop-blur-xl sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-3">
-          <div className="flex flex-wrap gap-2">
-            <ManagedOrderLinks />
-          </div>
           <nav aria-label="Menu categories" className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
             {menuCategories.map((category) => (
               <a key={category.name} href={`#${category.name.toLowerCase().replaceAll(" ", "-")}`} className="shrink-0 rounded-full border border-border bg-surface px-5 py-3 text-sm font-black text-muted transition hover:border-primary hover:text-white">
