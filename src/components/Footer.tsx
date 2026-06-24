@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaLocationDot, FaPhone } from "react-icons/fa6";
-import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import OrderOnlineButton from "@/components/OrderOnlineButton";
 import Reveal from "@/components/Reveal";
 import { displayPhone } from "@/lib/site-content";
 
@@ -32,8 +32,11 @@ export default function Footer() {
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/80">
             Family owned, fresh Mexican breakfast, tacos, seafood, catering, and daily plates on El Camino Real.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <ManagedOrderLinks variant="footer" />
+          <div className="mt-5 flex flex-wrap gap-3">
+            <OrderOnlineButton
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/14 bg-[#11100f] px-4 text-xs font-black text-white transition hover:bg-white/10"
+              label="See all ordering apps"
+            />
           </div>
         </Reveal>
 

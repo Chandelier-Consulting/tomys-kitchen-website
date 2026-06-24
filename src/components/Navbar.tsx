@@ -5,9 +5,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { FaBars, FaPhone, FaTimes } from "react-icons/fa";
-import OperatingStatus from "./OperatingStatus";
-import { orderLinks, tomysImages } from "@/lib/site-content";
+import { FaBars, FaTimes } from "react-icons/fa";
+import OrderOnlineButton from "./OrderOnlineButton";
+import { tomysImages } from "@/lib/site-content";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -53,7 +53,7 @@ export default function Navbar() {
           <span className="text-primary">Tomy&apos;s</span> <span className="text-cream">Kitchen</span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 xl:flex">
           {navLinks.map((link) => {
             const active = pathname === link.href;
             return (
@@ -74,25 +74,10 @@ export default function Navbar() {
           })}
         </div>
 
-        <div className="hidden lg:block">
-          <OperatingStatus />
-        </div>
-
-        <div className="hidden items-center gap-3 md:flex">
-          <a
-            href={orderLinks[0].href}
-            target="_blank"
-            rel="noreferrer"
+        <div className="hidden items-center gap-3 xl:flex">
+          <OrderOnlineButton
             className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-extrabold text-white transition hover:bg-primary-hover"
-          >
-            Order online
-          </a>
-          <a
-            href="tel:+16502898628"
-            className="hidden min-h-11 items-center justify-center gap-2 rounded-full border border-white/16 px-5 text-sm font-extrabold text-white transition hover:bg-white/10 xl:inline-flex"
-          >
-            Call pickup <FaPhone aria-hidden />
-          </a>
+          />
         </div>
 
         <button
@@ -100,7 +85,7 @@ export default function Navbar() {
           aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isOpen}
           onClick={() => setIsOpen((value) => !value)}
-          className={`grid h-11 w-11 place-items-center rounded-full border md:hidden ${
+          className={`grid h-11 w-11 place-items-center rounded-full border xl:hidden ${
             solidNav
               ? "border-white/15 text-white hover:bg-white/10"
               : "border-white/30 text-white hover:bg-white/10"
@@ -117,7 +102,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.2 }}
-            className="max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-white/10 bg-[rgba(17,16,15,0.98)] px-5 pb-6 shadow-xl md:hidden"
+            className="max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-white/10 bg-[rgba(17,16,15,0.98)] px-5 pb-6 shadow-xl xl:hidden"
           >
             <div className="mx-auto flex max-w-6xl flex-col gap-2 pt-3">
               {navLinks.map((link) => (
@@ -134,15 +119,11 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <a
-                href={orderLinks[0].href}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setIsOpen(false)}
+              <OrderOnlineButton
                 className="mt-2 rounded-lg bg-primary px-3 py-3 text-base font-black text-white"
-              >
-                Order online
-              </a>
+                label="Order online"
+                onOpen={() => setIsOpen(false)}
+              />
             </div>
           </motion.div>
         ) : null}

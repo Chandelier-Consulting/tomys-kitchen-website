@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight, FaClock, FaLocationDot, FaPhone, FaStar } from "react-icons/fa6";
 import ManagedImage from "@/components/ManagedImage";
-import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import OrderOnlineButton from "@/components/OrderOnlineButton";
 import Reveal from "@/components/Reveal";
 import { featuredItems } from "@/lib/menu-data";
 import { displayPhone, tomysImages, tomysVideos } from "@/lib/site-content";
@@ -153,7 +153,10 @@ export default function HomeTruckJourney() {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <ManagedOrderLinks />
+            <OrderOnlineButton
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-black text-white transition hover:bg-primary-hover"
+              label="See all ordering apps"
+            />
           </div>
         </Reveal>
       </section>

@@ -34,7 +34,7 @@ test("catering and about pages mention Tomas cuisine range", async () => {
 });
 
 test("navigation exposes catering and mobile controls stay compact", async () => {
-  const source = `${await read("../src/components/Navbar.tsx")}\n${await read("../src/components/MobileActionBar.tsx")}\n${await read("../src/components/OrderOnlineModal.tsx")}\n${await read("../src/components/OrderOnlineButton.tsx")}`;
+  const source = `${await read("../src/components/Navbar.tsx")}\n${await read("../src/components/MobileActionBar.tsx")}\n${await read("../src/components/OrderOnlineModal.tsx")}\n${await read("../src/components/OrderOnlineButton.tsx")}\n${await read("../src/components/HomeTruckJourney.tsx")}\n${await read("../src/app/location/page.tsx")}\n${await read("../src/components/Footer.tsx")}\n${await read("../src/lib/site-content.ts")}`;
 
   assert.match(source, /label: "Catering"/);
   assert.match(source, /label: "Order"/);
@@ -43,6 +43,10 @@ test("navigation exposes catering and mobile controls stay compact", async () =>
   assert.match(source, /OrderOnlineModal/);
   assert.match(source, /DoorDash/);
   assert.match(source, /Uber Eats/);
+  assert.match(source, /onOpen=\{\(\) => setIsOpen\(false\)\}/);
+  assert.match(source, /See all ordering apps/);
+  assert.match(source, /bg-\[#11100f\]/);
+  assert.match(source, /border-white\/14/);
 });
 
 test("dashboard is a simple site manager for photos and menu only", async () => {

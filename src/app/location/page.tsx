@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import type { IconType } from "react-icons";
 import { FaClock, FaLocationDot, FaMapLocationDot, FaPhone, FaRoute } from "react-icons/fa6";
-import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import OrderOnlineButton from "@/components/OrderOnlineButton";
 import Reveal from "@/components/Reveal";
 import { tomysImages } from "@/lib/site-content";
 
@@ -91,8 +91,11 @@ export default function LocationPage() {
             <p className="mt-5 text-base font-semibold leading-7 text-muted">
               Order pickup or delivery before you head over, then use the map if you want to stop by the truck in person.
             </p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              <ManagedOrderLinks variant="light" />
+            <div className="mt-7 flex flex-wrap gap-3">
+              <OrderOnlineButton
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-6 text-sm font-black text-white transition hover:bg-primary-hover"
+                label="See all ordering apps"
+              />
             </div>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2">
