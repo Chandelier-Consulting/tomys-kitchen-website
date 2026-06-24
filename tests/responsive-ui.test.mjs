@@ -37,31 +37,36 @@ test("navigation exposes catering and mobile controls stay compact", async () =>
   assert.match(source, /overflow-y-auto/);
 });
 
-test("dashboard includes Firebase-backed manager content editing", async () => {
+test("dashboard is a simple site manager for photos and menu only", async () => {
   const dashboard = await read("../src/app/dashboard/DashboardClient.tsx");
 
-  assert.match(dashboard, /"Content"/);
-  assert.match(dashboard, /Manager login/);
-  assert.match(dashboard, /Add menu item/);
-  assert.match(dashboard, /Replace image/);
-  assert.match(dashboard, /uploadBytes/);
-  assert.match(dashboard, /setDoc/);
-  assert.match(dashboard, /onAuthStateChanged/);
+  assert.match(dashboard, /Manager dashboard/i);
+  assert.match(dashboard, /Section photo/);
+  assert.match(dashboard, /Item photo/);
+  assert.match(dashboard, /Add item to/);
+  assert.match(dashboard, /Save menu changes/);
+  assert.match(dashboard, /FileReader/);
+  assert.match(dashboard, /toDataURL/);
+  assert.doesNotMatch(dashboard, /Photo Manager/);
+  assert.doesNotMatch(dashboard, /Prototype/);
+  assert.doesNotMatch(dashboard, /onAuthStateChanged/);
 });
 
-test("firebase config and seed script exist for content management", async () => {
+test("firebase config and seed script support direct manager editing", async () => {
   const firebaseClient = await read("../src/lib/firebase-client.ts");
   const firebaseConfig = await read("../firebase.json");
   const proxy = await read("../src/proxy.ts");
+  const firestoreRules = await read("../firestore.rules");
   const seed = await read("../scripts/seed-firestore.mjs");
 
   assert.match(firebaseClient, /initializeApp/);
   assert.match(firebaseClient, /getFirestore/);
   assert.match(firebaseClient, /getStorage/);
-  assert.match(firebaseClient, /getAuth/);
   assert.match(firebaseConfig, /firestore/);
   assert.match(firebaseConfig, /storage/);
   assert.match(proxy, /DASHBOARD_BASIC_AUTH/);
+  assert.doesNotMatch(proxy, /owner-preview/);
+  assert.match(firestoreRules, /allow write: if true/);
   assert.match(seed, /tomysImages/);
   assert.match(seed, /menuCategories/);
 });

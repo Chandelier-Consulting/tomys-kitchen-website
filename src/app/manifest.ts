@@ -10,5 +10,12 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: "#171615",
     theme_color: "#E45F3C",
     categories: ["food", "business"],
+    icons: [
+      {
+        src: "/images/tomys/logo.jpg",
+        sizes: "828x1042",
+        type: "image/jpeg",
+      },
+    ],
   };
 }

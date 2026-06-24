@@ -22,6 +22,11 @@ export const metadata: Metadata = {
     template: `%s | ${businessName}`,
   },
   description,
+  icons: {
+    icon: "/images/tomys/logo.jpg",
+    shortcut: "/images/tomys/logo.jpg",
+    apple: "/images/tomys/logo.jpg",
+  },
   openGraph: {
     title: `${businessName} | Mexican Food Truck in Mountain View`,
     description,

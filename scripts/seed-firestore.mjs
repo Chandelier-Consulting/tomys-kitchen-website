@@ -1,17 +1,22 @@
-import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { applicationDefault, cert, getApps, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { readFile } from "node:fs/promises";
 
+const inlineServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
 const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
 
-if (!serviceAccountPath) {
-  throw new Error("Set GOOGLE_APPLICATION_CREDENTIALS to a Firebase service account JSON file.");
+if (!getApps().length) {
+  if (inlineServiceAccount) {
+    initializeApp({ credential: cert(JSON.parse(inlineServiceAccount)) });
+  } else if (serviceAccountPath) {
+    initializeApp({ credential: applicationDefault() });
+  } else {
+    throw new Error("Set FIREBASE_SERVICE_ACCOUNT_JSON or GOOGLE_APPLICATION_CREDENTIALS before seeding Firestore.");
+  }
 }
 
-const serviceAccount = JSON.parse(await readFile(serviceAccountPath, "utf8"));
-
-if (!getApps().length) {
-  initializeApp({ credential: cert(serviceAccount) });
+if (serviceAccountPath) {
+  await readFile(serviceAccountPath, "utf8");
 }
 
 const tomysImages = {
@@ -24,6 +29,21 @@ const tomysImages = {
   cateringSalmon: "/images/tomys/catering-salmon.jpg",
   cateringPasta: "/images/tomys/catering-pasta.jpg",
   cateringSteak: "/images/tomys/catering-steak.jpg",
+};
+
+const siteImages = {
+  Logo: tomysImages.logo,
+  Truck: tomysImages.truck,
+  "Breakfast Burrito": tomysImages.breakfastBurrito,
+  "Fish Tacos (Tacos de Pescado)": tomysImages.fishTacos,
+  "Shrimp Tacos": tomysImages.shrimpTacos,
+  "Torta Oaxaqueña": tomysImages.torta,
+  Breakfast: tomysImages.breakfastBurrito,
+  Tacos: tomysImages.fishTacos,
+  Mains: tomysImages.torta,
+  "Seafood Cocktails": tomysImages.shrimpTacos,
+  Drinks: tomysImages.truck,
+  Catering: tomysImages.cateringSalmon,
 };
 
 const orderLinks = [
@@ -54,12 +74,12 @@ const menuCategories = [
   {
     name: "Mains",
     items: [
-      { name: "Quesabirria Combo", price: "$15.00", description: "Crispy cheese birria tacos with consomme, rice, and beans" },
+      { name: "Quesabirria Combo", price: "$15.00", description: "Crispy cheese birria tacos with consommé, rice, and beans" },
       { name: "Quesadilla with Shrimp", price: "$16.88", description: "Large flour tortilla stuffed with shrimp and melted cheese" },
-      { name: "Torta Oaxaquena", price: "$17.50", description: "Oaxacan-style sandwich with choice of meat, avocado, and queso fresco" },
+      { name: "Torta Oaxaqueña", price: "$17.50", description: "Oaxacan-style sandwich with choice of meat, avocado, and queso fresco" },
       { name: "Milanese Plate (Plato de Milanesa)", price: "$17.50", description: "Crispy breaded cutlet served with rice, beans, and salad" },
       { name: "Shrimp Fajitas Plate", price: "$18.75", description: "Sizzling shrimp fajitas with peppers, onions, rice, and beans" },
-      { name: "Burrito de Camaron o Pescado", price: "$17.50", description: "Large burrito with your choice of shrimp or fish, rice, beans, and fixings" },
+      { name: "Burrito de Camarón o Pescado", price: "$17.50", description: "Large burrito with your choice of shrimp or fish, rice, beans, and fixings" },
     ],
   },
   {
@@ -81,15 +101,24 @@ const menuCategories = [
   },
 ];
 
-const db = getFirestore();
+const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-await db.doc("siteContent/settings").set({ orderLinks, images: tomysImages }, { merge: true });
+const db = getFirestore();
+const batch = db.batch();
+
+batch.set(db.doc("siteContent/settings"), { orderLinks, images: siteImages, updatedAt: new Date().toISOString() }, { merge: true });
 
 for (const category of menuCategories) {
-  for (const item of category.items) {
-    const id = `${category.name}-${item.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-    await db.doc(`menuItems/${id}`).set({ ...item, category: category.name, visible: true }, { merge: true });
+  for (const [index, item] of category.items.entries()) {
+    const id = `${slugify(category.name)}-${slugify(item.name)}`;
+    batch.set(
+      db.doc(`menuItems/${id}`),
+      { ...item, category: category.name, visible: true, sortOrder: index, updatedAt: new Date().toISOString() },
+      { merge: true },
+    );
   }
 }
+
+await batch.commit();
 
 console.log("Seeded Tomy's Kitchen Firestore content.");

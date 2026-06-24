@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase-client";
@@ -7,9 +8,13 @@ import type { MenuCategory, MenuItem } from "@/lib/menu-data";
 import { tomysImages } from "@/lib/site-content";
 import ManagedImage from "./ManagedImage";
 
-type ManagedMenuItem = MenuItem & { category: string; visible?: boolean };
+type ManagedMenuItem = MenuItem & { category: string; visible?: boolean; sortOrder?: number; imageSrc?: string };
 
 const images = [tomysImages.breakfastBurrito, tomysImages.fishTacos, tomysImages.shrimpTacos, tomysImages.torta, tomysImages.cateringSalmon];
+
+function hasImageSrc(item: MenuItem | ManagedMenuItem): item is ManagedMenuItem {
+  return typeof (item as ManagedMenuItem).imageSrc === "string" && Boolean((item as ManagedMenuItem).imageSrc);
+}
 
 export default function ManagedMenuSections({ fallback }: { fallback: MenuCategory[] }) {
   const [items, setItems] = useState<ManagedMenuItem[]>([]);
@@ -23,8 +28,23 @@ export default function ManagedMenuSections({ fallback }: { fallback: MenuCatego
 
   const categories = useMemo(() => {
     if (!items.length) return fallback;
-    const names = Array.from(new Set(items.map((item) => item.category)));
-    return names.map((name) => ({ name, items: items.filter((item) => item.category === name) }));
+    const fallbackOrder = fallback.map((category) => category.name);
+    const names = Array.from(new Set(items.map((item) => item.category))).sort((left, right) => {
+      const leftIndex = fallbackOrder.indexOf(left);
+      const rightIndex = fallbackOrder.indexOf(right);
+
+      if (leftIndex === -1 && rightIndex === -1) return left.localeCompare(right);
+      if (leftIndex === -1) return 1;
+      if (rightIndex === -1) return -1;
+      return leftIndex - rightIndex;
+    });
+
+    return names.map((name) => ({
+      name,
+      items: items
+        .filter((item) => item.category === name)
+        .sort((left, right) => (left.sortOrder ?? 0) - (right.sortOrder ?? 0)),
+    }));
   }, [fallback, items]);
 
   return (
@@ -43,7 +63,13 @@ export default function ManagedMenuSections({ fallback }: { fallback: MenuCatego
               </div>
               <div className="p-5 sm:p-7">
                 {category.items.map((item) => (
-                  <article key={`${category.name}-${item.name}`} className="grid gap-3 border-b border-border py-5 last:border-b-0 sm:grid-cols-[1fr_auto] sm:gap-6">
+                  <article key={`${category.name}-${item.name}`} className="grid gap-3 border-b border-border py-5 last:border-b-0 sm:grid-cols-[88px_1fr_auto] sm:items-center sm:gap-6">
+                    <img
+                      src={hasImageSrc(item) ? item.imageSrc : images[categoryIndex % images.length]}
+                      alt={item.name}
+                      className="h-20 w-22 rounded-2xl object-cover"
+                      loading="lazy"
+                    />
                     <div>
                       <h3 className="text-xl font-black text-secondary">{item.name}</h3>
                       <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">{item.description}</p>

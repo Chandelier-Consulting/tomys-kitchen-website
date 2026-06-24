@@ -1,9 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const dashboardUser = process.env.DASHBOARD_USER ?? "tomys";
-const dashboardPassword = process.env.DASHBOARD_PASSWORD ?? "owner-preview";
-
 function unauthorized() {
   return new NextResponse("Dashboard access required", {
     status: 401,
@@ -15,12 +12,27 @@ function unauthorized() {
 }
 
 export function proxy(request: NextRequest) {
-  if (!request.nextUrl.pathname.startsWith("/dashboard")) {
+  const isDashboardPage = request.nextUrl.pathname.startsWith("/dashboard");
+  const isDashboardApi = request.nextUrl.pathname.startsWith("/api/dashboard");
+
+  if (!isDashboardPage && !isDashboardApi) {
     return NextResponse.next();
   }
 
   if (process.env.DASHBOARD_BASIC_AUTH !== "true") {
     return NextResponse.next();
+  }
+
+  const dashboardUser = process.env.DASHBOARD_USER;
+  const dashboardPassword = process.env.DASHBOARD_PASSWORD;
+
+  if (!dashboardUser || !dashboardPassword) {
+    return new NextResponse("Dashboard credentials are not configured", {
+      status: 500,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    });
   }
 
   const authHeader = request.headers.get("authorization");
@@ -48,5 +60,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/api/dashboard/:path*"],
 };

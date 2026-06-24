@@ -1,22 +1,22 @@
 import { getApps, initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAGRUIWpuGmHRgRH-SXHmF8n3WSRpeXQV0",
+  authDomain: "tomys-kitchen.firebaseapp.com",
+  projectId: "tomys-kitchen",
+  storageBucket: "tomys-kitchen.firebasestorage.app",
+  messagingSenderId: "688845926740",
+  appId: "1:688845926740:web:5fffda536bf1679bc1d8c1",
+  measurementId: "G-CRQR2R4R9M",
 };
 
-export const firebaseReady = Object.values(firebaseConfig).every(Boolean);
+export const firebaseReady = true;
 
 export const firebaseApp = firebaseReady
   ? getApps()[0] ?? initializeApp(firebaseConfig)
   : null;
 
-export const auth = firebaseApp ? getAuth(firebaseApp) : null;
 export const db = firebaseApp ? getFirestore(firebaseApp) : null;
 export const storage = firebaseApp ? getStorage(firebaseApp) : null;
