@@ -19,8 +19,8 @@ export const tomysVideos = {
 };
 
 export const orderLinks = [
-  { label: "DoorDash", href: "https://order.online/store/-30486102" },
-  { label: "Uber Eats", href: "https://postmates.com/store/tomys-kitchen/JFvmxjFvUy2gaYKongCWeg" },
-  { label: "Grubhub", href: "https://www.grubhub.com/search?searchTerm=Tomy%27s%20Kitchen%20239%20W%20El%20Camino%20Real%20Mountain%20View" },
-  { label: "Yelp", href: "https://www.yelp.com/search?find_desc=Tomy%27s+Kitchen&find_loc=239+W+El+Camino+Real%2C+Mountain+View%2C+CA" },
+  { label: "DoorDash", href: "https://www.doordash.com/store/tomys-kitchen-food-truck-mountain-view-30486102/?srsltid=AfmBOoqhFlpLiPRD7iptcszBpzFHfJ--YBiYcOsPj966-xshhFGhML1A" },
+  { label: "Uber Eats", href: "https://www.ubereats.com/store/tomys-kitchen/JFvmxjFvUy2gaYKongCWeg?srsltid=AfmBOorKo-HKOONWeeg5U2CqsCpa1rlfml_yXOyGqlbXEK3WC-4DSHUN" },
+  { label: "Postmates", href: "https://postmates.com/store/tomys-kitchen/JFvmxjFvUy2gaYKongCWeg" },
+  { label: "Yelp", href: "https://www.yelp.com/biz/tomys-kitchen-mountain-view-5" },
 ];

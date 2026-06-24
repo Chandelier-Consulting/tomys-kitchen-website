@@ -32,9 +32,10 @@ test("navigation exposes catering and mobile controls stay compact", async () =>
   const source = `${await read("../src/components/Navbar.tsx")}\n${await read("../src/components/MobileActionBar.tsx")}`;
 
   assert.match(source, /label: "Catering"/);
-  assert.match(source, /label: "Cater"/);
+  assert.match(source, /label: "Order"/);
   assert.match(source, /max-h-\[calc\(100svh-5rem\)\]/);
   assert.match(source, /overflow-y-auto/);
+  assert.match(source, /Order online/);
 });
 
 test("dashboard is a simple site manager for photos and menu only", async () => {
@@ -71,14 +72,26 @@ test("firebase config and seed script support direct manager editing", async () 
   assert.match(seed, /menuCategories/);
 });
 
-test("ordering marketplace links include real searched URLs or search fallbacks", async () => {
-  const content = await read("../src/lib/site-content.ts");
+test("ordering marketplace links use the live customer-facing URLs", async () => {
+  const content = `${await read("../src/lib/site-content.ts")}\n${await read("../scripts/seed-firestore.mjs")}`;
 
   assert.match(content, /DoorDash/);
   assert.match(content, /Uber Eats/);
-  assert.match(content, /Grubhub/);
+  assert.match(content, /Postmates/);
   assert.match(content, /Yelp/);
   assert.doesNotMatch(content, /href: ""/);
-  assert.match(content, /order\.online\/store\/-30486102/);
+  assert.match(content, /doordash\.com\/store\/tomys-kitchen-food-truck-mountain-view-30486102/);
+  assert.match(content, /ubereats\.com\/store\/tomys-kitchen/);
   assert.match(content, /postmates\.com\/store\/tomys-kitchen/);
+  assert.match(content, /yelp\.com\/biz\/tomys-kitchen-mountain-view-5/);
+});
+
+test("menu items carry their own photo defaults through the menu and dashboard", async () => {
+  const menuData = await read("../src/lib/menu-data.ts");
+  const menuSections = await read("../src/components/ManagedMenuSections.tsx");
+  const dashboardContent = await read("../src/lib/dashboard-content.ts");
+
+  assert.match(menuData, /imageSrc:/);
+  assert.match(menuSections, /resolveItemImage/);
+  assert.match(dashboardContent, /item\.imageSrc/);
 });

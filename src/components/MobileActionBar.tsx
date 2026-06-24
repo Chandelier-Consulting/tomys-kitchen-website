@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBookOpen, FaLocationDot, FaPhone, FaUsers } from "react-icons/fa6";
+import { FaBookOpen, FaLocationDot, FaPhone, FaTruckFast } from "react-icons/fa6";
+import { orderLinks } from "@/lib/site-content";
 
 const actions = [
   { href: "tel:+16502898628", label: "Call", icon: FaPhone },
+  { href: orderLinks[0].href, label: "Order", icon: FaTruckFast, external: true },
   { href: "/menu", label: "Menu", icon: FaBookOpen },
   {
     href: "https://www.google.com/maps/search/?api=1&query=239+W+El+Camino+Real+Mountain+View+CA+94040",
@@ -13,7 +15,6 @@ const actions = [
     icon: FaLocationDot,
     external: true,
   },
-  { href: "/group-orders", label: "Cater", icon: FaUsers },
 ];
 
 export default function MobileActionBar() {

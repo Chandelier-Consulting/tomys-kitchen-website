@@ -23,17 +23,6 @@ export type DashboardImageSlot = {
   defaultSrc: string;
 };
 
-function defaultItemImage(category: string, name: string) {
-  const normalized = `${category} ${name}`.toLowerCase();
-
-  if (normalized.includes("breakfast")) return tomysImages.breakfastBurrito;
-  if (normalized.includes("fish")) return tomysImages.fishTacos;
-  if (normalized.includes("shrimp")) return tomysImages.shrimpTacos;
-  if (normalized.includes("torta")) return tomysImages.torta;
-  if (normalized.includes("drink")) return tomysImages.truck;
-  return tomysImages.cateringSalmon;
-}
-
 export const dashboardImageSlots: DashboardImageSlot[] = [
   { key: "Logo", label: "Logo", defaultSrc: tomysImages.logo },
   { key: "Truck", label: "Truck", defaultSrc: tomysImages.truck },
@@ -79,7 +68,7 @@ export function defaultMenuItems(): DashboardMenuItem[] {
       category: category.name,
       visible: true,
       sortOrder: index,
-      imageSrc: defaultItemImage(category.name, item.name),
+      imageSrc: item.imageSrc || tomysImages.cateringSalmon,
     })),
   );
 }

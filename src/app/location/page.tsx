@@ -88,7 +88,7 @@ export default function LocationPage() {
             <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Before you go</p>
             <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Look for the red truck and call if you are feeding more than a few people.</h2>
             <p className="mt-5 text-base font-semibold leading-7 text-muted">
-              Ordering links can sit here once the live DoorDash, Uber Eats, Yelp, and Grubhub URLs are available.
+              Order pickup or delivery before you head over, then use the map if you want to stop by the truck in person.
             </p>
             <div className="mt-7 flex flex-wrap gap-2">
               <ManagedOrderLinks variant="light" />

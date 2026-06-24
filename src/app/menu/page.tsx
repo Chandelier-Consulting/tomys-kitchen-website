@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowRight, FaPhone } from "react-icons/fa6";
+import { FaPhone } from "react-icons/fa6";
 import ManagedMenuSections from "@/components/ManagedMenuSections";
+import ManagedOrderLinks from "@/components/ManagedOrderLinks";
 import { menuCategories } from "@/lib/menu-data";
-import { tomysImages } from "@/lib/site-content";
+import { orderLinks, tomysImages } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Menu",
@@ -23,20 +24,23 @@ export default function MenuPage() {
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,#11100f_0%,rgba(17,16,15,.96)_44%,rgba(17,16,15,.52)_100%)]" />
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Menu built for quick pickup</p>
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-accent">Fresh from Tomy&apos;s Kitchen</p>
             <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[0.94] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
-              Pick fast. Call ahead. Eat well.
+              Breakfast burritos, tacos, seafood, and lunch favorites in Mountain View.
             </h1>
             <p className="mt-6 max-w-2xl text-lg font-semibold leading-8 text-white/76">
-              Fresh breakfast, tacos, seafood cocktails, mains, catering favorites, and drinks from Tomy&apos;s Kitchen on El Camino Real.
+              Order online for pickup or delivery, or call ahead and swing by the truck on El Camino Real for a fresh meal.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
+              <a href={orderLinks[0].href} target="_blank" rel="noreferrer" className="inline-flex min-h-13 items-center justify-center rounded-full bg-primary px-7 text-base font-black text-white transition hover:bg-primary-hover">
+                Order online
+              </a>
+              <a href="tel:+16502898628" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-white/24 px-7 text-base font-black text-white transition hover:bg-white/10">
                 Call order <FaPhone aria-hidden />
               </a>
-              <Link href="/location" className="inline-flex min-h-13 items-center justify-center gap-3 rounded-full border border-white/24 px-7 text-base font-black text-white transition hover:bg-white/10">
-                Directions <FaArrowRight aria-hidden />
-              </Link>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <ManagedOrderLinks variant="light" />
             </div>
           </div>
           <div className="grid grid-cols-3 gap-3">
@@ -50,13 +54,18 @@ export default function MenuPage() {
       </section>
 
       <section className="sticky top-[72px] z-30 border-y border-border bg-background/92 px-5 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
-        <nav aria-label="Menu categories" className="mx-auto flex max-w-6xl gap-2 overflow-x-auto [scrollbar-width:none]">
-          {menuCategories.map((category) => (
-            <a key={category.name} href={`#${category.name.toLowerCase().replaceAll(" ", "-")}`} className="shrink-0 rounded-full border border-border bg-surface px-5 py-3 text-sm font-black text-muted transition hover:border-primary hover:text-white">
-              {category.name}
-            </a>
-          ))}
-        </nav>
+        <div className="mx-auto flex max-w-6xl flex-col gap-3">
+          <div className="flex flex-wrap gap-2">
+            <ManagedOrderLinks />
+          </div>
+          <nav aria-label="Menu categories" className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
+            {menuCategories.map((category) => (
+              <a key={category.name} href={`#${category.name.toLowerCase().replaceAll(" ", "-")}`} className="shrink-0 rounded-full border border-border bg-surface px-5 py-3 text-sm font-black text-muted transition hover:border-primary hover:text-white">
+                {category.name}
+              </a>
+            ))}
+          </nav>
+        </div>
       </section>
 
       <ManagedMenuSections fallback={menuCategories} />
@@ -67,7 +76,7 @@ export default function MenuPage() {
             <h2 className="text-3xl font-black text-secondary">Ordering for a crew?</h2>
             <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-muted">Call ahead so the truck can time larger breakfast, taco, or lunch pickups without slowing the window.</p>
           </div>
-          <a href="tel:+16502898628" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Call (650) 289-8628</a>
+          <Link href="/group-orders" className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">Plan catering</Link>
         </div>
       </section>
     </>

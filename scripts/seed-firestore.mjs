@@ -1,23 +1,17 @@
-import { applicationDefault, cert, getApps, initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
-import { readFile } from "node:fs/promises";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { doc, getFirestore, writeBatch } from "firebase/firestore";
 
-const inlineServiceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-const serviceAccountPath = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const firebaseConfig = {
+  apiKey: "AIzaSyAGRUIWpuGmHRgRH-SXHmF8n3WSRpeXQV0",
+  authDomain: "tomys-kitchen.firebaseapp.com",
+  projectId: "tomys-kitchen",
+  storageBucket: "tomys-kitchen.firebasestorage.app",
+  messagingSenderId: "688845926740",
+  appId: "1:688845926740:web:5fffda536bf1679bc1d8c1",
+  measurementId: "G-CRQR2R4R9M",
+};
 
-if (!getApps().length) {
-  if (inlineServiceAccount) {
-    initializeApp({ credential: cert(JSON.parse(inlineServiceAccount)) });
-  } else if (serviceAccountPath) {
-    initializeApp({ credential: applicationDefault() });
-  } else {
-    throw new Error("Set FIREBASE_SERVICE_ACCOUNT_JSON or GOOGLE_APPLICATION_CREDENTIALS before seeding Firestore.");
-  }
-}
-
-if (serviceAccountPath) {
-  await readFile(serviceAccountPath, "utf8");
-}
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
 const tomysImages = {
   logo: "/images/tomys/logo.jpg",
@@ -47,10 +41,10 @@ const siteImages = {
 };
 
 const orderLinks = [
-  { label: "DoorDash", href: "https://order.online/store/-30486102" },
-  { label: "Uber Eats", href: "https://postmates.com/store/tomys-kitchen/JFvmxjFvUy2gaYKongCWeg" },
-  { label: "Grubhub", href: "https://www.grubhub.com/search?searchTerm=Tomy%27s%20Kitchen%20239%20W%20El%20Camino%20Real%20Mountain%20View" },
-  { label: "Yelp", href: "https://www.yelp.com/search?find_desc=Tomy%27s+Kitchen&find_loc=239+W+El+Camino+Real%2C+Mountain+View%2C+CA" },
+  { label: "DoorDash", href: "https://www.doordash.com/store/tomys-kitchen-food-truck-mountain-view-30486102/?srsltid=AfmBOoqhFlpLiPRD7iptcszBpzFHfJ--YBiYcOsPj966-xshhFGhML1A" },
+  { label: "Uber Eats", href: "https://www.ubereats.com/store/tomys-kitchen/JFvmxjFvUy2gaYKongCWeg?srsltid=AfmBOorKo-HKOONWeeg5U2CqsCpa1rlfml_yXOyGqlbXEK3WC-4DSHUN" },
+  { label: "Postmates", href: "https://postmates.com/store/tomys-kitchen/JFvmxjFvUy2gaYKongCWeg" },
+  { label: "Yelp", href: "https://www.yelp.com/biz/tomys-kitchen-mountain-view-5" },
 ];
 
 const menuCategories = [
@@ -102,18 +96,29 @@ const menuCategories = [
 ];
 
 const slugify = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const defaultItemImage = (category, itemName) => {
+  const normalized = `${category} ${itemName}`.toLowerCase();
 
-const db = getFirestore();
-const batch = db.batch();
+  if (normalized.includes("breakfast")) return tomysImages.breakfastBurrito;
+  if (normalized.includes("fish")) return tomysImages.fishTacos;
+  if (normalized.includes("shrimp") || normalized.includes("coctel") || normalized.includes("aguachile")) return tomysImages.shrimpTacos;
+  if (normalized.includes("torta")) return tomysImages.torta;
+  if (normalized.includes("steak") || normalized.includes("milanesa") || normalized.includes("birria")) return tomysImages.cateringSteak;
+  if (normalized.includes("drink") || normalized.includes("horchata") || normalized.includes("jamaica") || normalized.includes("jarritos") || normalized.includes("coke")) return tomysImages.truck;
+  return tomysImages.cateringSalmon;
+};
 
-batch.set(db.doc("siteContent/settings"), { orderLinks, images: siteImages, updatedAt: new Date().toISOString() }, { merge: true });
+const db = getFirestore(app);
+const batch = writeBatch(db);
+
+batch.set(doc(db, "siteContent", "settings"), { orderLinks, images: siteImages, updatedAt: new Date().toISOString() }, { merge: true });
 
 for (const category of menuCategories) {
   for (const [index, item] of category.items.entries()) {
     const id = `${slugify(category.name)}-${slugify(item.name)}`;
     batch.set(
-      db.doc(`menuItems/${id}`),
-      { ...item, category: category.name, visible: true, sortOrder: index, updatedAt: new Date().toISOString() },
+      doc(db, "menuItems", id),
+      { ...item, category: category.name, visible: true, sortOrder: index, imageSrc: defaultItemImage(category.name, item.name), updatedAt: new Date().toISOString() },
       { merge: true },
     );
   }

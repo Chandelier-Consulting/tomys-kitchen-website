@@ -12,8 +12,8 @@ type ManagedMenuItem = MenuItem & { category: string; visible?: boolean; sortOrd
 
 const images = [tomysImages.breakfastBurrito, tomysImages.fishTacos, tomysImages.shrimpTacos, tomysImages.torta, tomysImages.cateringSalmon];
 
-function hasImageSrc(item: MenuItem | ManagedMenuItem): item is ManagedMenuItem {
-  return typeof (item as ManagedMenuItem).imageSrc === "string" && Boolean((item as ManagedMenuItem).imageSrc);
+function resolveItemImage(item: MenuItem | ManagedMenuItem, categoryFallback: string) {
+  return typeof item.imageSrc === "string" && item.imageSrc ? item.imageSrc : categoryFallback;
 }
 
 export default function ManagedMenuSections({ fallback }: { fallback: MenuCategory[] }) {
@@ -65,7 +65,7 @@ export default function ManagedMenuSections({ fallback }: { fallback: MenuCatego
                 {category.items.map((item) => (
                   <article key={`${category.name}-${item.name}`} className="grid gap-3 border-b border-border py-5 last:border-b-0 sm:grid-cols-[88px_1fr_auto] sm:items-center sm:gap-6">
                     <img
-                      src={hasImageSrc(item) ? item.imageSrc : images[categoryIndex % images.length]}
+                      src={resolveItemImage(item, images[categoryIndex % images.length])}
                       alt={item.name}
                       className="h-20 w-22 rounded-2xl object-cover"
                       loading="lazy"

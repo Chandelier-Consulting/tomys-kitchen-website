@@ -7,7 +7,7 @@ import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { FaBars, FaPhone, FaTimes } from "react-icons/fa";
 import OperatingStatus from "./OperatingStatus";
-import { tomysImages } from "@/lib/site-content";
+import { orderLinks, tomysImages } from "@/lib/site-content";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -78,12 +78,22 @@ export default function Navbar() {
           <OperatingStatus />
         </div>
 
-        <a
-          href="tel:+16502898628"
-          className="hidden min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-extrabold text-white transition hover:bg-primary-hover md:inline-flex"
-        >
-          Call pickup <FaPhone aria-hidden />
-        </a>
+        <div className="hidden items-center gap-3 md:flex">
+          <a
+            href={orderLinks[0].href}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-extrabold text-white transition hover:bg-primary-hover"
+          >
+            Order online
+          </a>
+          <a
+            href="tel:+16502898628"
+            className="hidden min-h-11 items-center justify-center gap-2 rounded-full border border-white/16 px-5 text-sm font-extrabold text-white transition hover:bg-white/10 xl:inline-flex"
+          >
+            Call pickup <FaPhone aria-hidden />
+          </a>
+        </div>
 
         <button
           type="button"
@@ -124,6 +134,15 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <a
+                href={orderLinks[0].href}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="mt-2 rounded-lg bg-primary px-3 py-3 text-base font-black text-white"
+              >
+                Order online
+              </a>
             </div>
           </motion.div>
         ) : null}
