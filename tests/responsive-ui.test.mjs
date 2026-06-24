@@ -34,13 +34,15 @@ test("catering and about pages mention Tomas cuisine range", async () => {
 });
 
 test("navigation exposes catering and mobile controls stay compact", async () => {
-  const source = `${await read("../src/components/Navbar.tsx")}\n${await read("../src/components/MobileActionBar.tsx")}`;
+  const source = `${await read("../src/components/Navbar.tsx")}\n${await read("../src/components/MobileActionBar.tsx")}\n${await read("../src/components/OrderOnlineModal.tsx")}\n${await read("../src/components/OrderOnlineButton.tsx")}`;
 
   assert.match(source, /label: "Catering"/);
   assert.match(source, /label: "Order"/);
   assert.match(source, /max-h-\[calc\(100svh-5rem\)\]/);
   assert.match(source, /overflow-y-auto/);
-  assert.match(source, /Order online/);
+  assert.match(source, /OrderOnlineModal/);
+  assert.match(source, /DoorDash/);
+  assert.match(source, /Uber Eats/);
 });
 
 test("dashboard is a simple site manager for photos and menu only", async () => {
@@ -99,8 +101,11 @@ test("menu items carry their own photo defaults through the menu and dashboard",
   const menuData = await read("../src/lib/menu-data.ts");
   const menuSections = await read("../src/components/ManagedMenuSections.tsx");
   const dashboardContent = await read("../src/lib/dashboard-content.ts");
+  const footer = await read("../src/components/Footer.tsx");
 
   assert.match(menuData, /imageSrc:/);
   assert.match(menuSections, /resolveItemImage/);
+  assert.match(menuSections, /Reveal/);
   assert.match(dashboardContent, /item\.imageSrc/);
+  assert.match(footer, /Reveal/);
 });

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaLocationDot, FaPhone } from "react-icons/fa6";
 import ManagedOrderLinks from "@/components/ManagedOrderLinks";
+import Reveal from "@/components/Reveal";
 import { displayPhone } from "@/lib/site-content";
 
 const links = [
@@ -24,7 +25,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-border bg-[var(--kitchen-night)] text-white">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr] lg:px-8">
-        <div>
+        <Reveal>
           <Link href="/" className="text-2xl font-extrabold text-primary">
             Tomy&apos;s Kitchen
           </Link>
@@ -34,9 +35,9 @@ export default function Footer() {
           <div className="mt-5 flex flex-wrap gap-2">
             <ManagedOrderLinks variant="footer" />
           </div>
-        </div>
+        </Reveal>
 
-        <div>
+        <Reveal variant="float">
           <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-accent">Quick Links</h2>
           <nav className="mt-4 grid gap-3" aria-label="Footer navigation">
             {links.map((link) => (
@@ -45,9 +46,9 @@ export default function Footer() {
               </Link>
             ))}
           </nav>
-        </div>
+        </Reveal>
 
-        <div>
+        <Reveal variant="float">
           <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-accent">Contact</h2>
           <div className="mt-4 grid gap-3 text-sm text-white/82">
             <p className="flex gap-3">
@@ -68,11 +69,11 @@ export default function Footer() {
               <span>@tomys_kitchen</span>
             </a>
           </div>
-        </div>
+        </Reveal>
       </div>
-      <div className="border-t border-white/10 px-5 py-5 text-center text-xs text-white/72">
+      <Reveal className="border-t border-white/10 px-5 py-5 text-center text-xs text-white/72">
         © {new Date().getFullYear()} Tomy&apos;s Kitchen. All rights reserved.
-      </div>
+      </Reveal>
     </footer>
   );
 }
