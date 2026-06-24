@@ -12,10 +12,7 @@ function unauthorized() {
 }
 
 export function proxy(request: NextRequest) {
-  const isDashboardPage = request.nextUrl.pathname.startsWith("/dashboard");
-  const isDashboardApi = request.nextUrl.pathname.startsWith("/api/dashboard");
-
-  if (!isDashboardPage && !isDashboardApi) {
+  if (!request.nextUrl.pathname.startsWith("/dashboard")) {
     return NextResponse.next();
   }
 
@@ -60,5 +57,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/dashboard/:path*"],
+  matcher: ["/dashboard/:path*"],
 };

@@ -1,10 +1,5 @@
-import "server-only";
-
-import { readdir } from "node:fs/promises";
-import path from "node:path";
-import { getAdminDb } from "@/lib/firebase-admin";
 import { menuCategories } from "@/lib/menu-data";
-import { orderLinks, tomysImages } from "@/lib/site-content";
+import { tomysImages } from "@/lib/site-content";
 
 export type DashboardImageOption = {
   label: string;
@@ -54,8 +49,17 @@ export const dashboardImageSlots: DashboardImageSlot[] = [
   { key: "Catering", label: "Catering", defaultSrc: tomysImages.cateringSalmon },
 ];
 
-const imageDirectory = path.join(process.cwd(), "public", "images", "tomys");
-const imagePattern = /\.(png|jpe?g|webp|avif)$/i;
+export const dashboardImageOptions: DashboardImageOption[] = [
+  { label: "Breakfast Burrito", src: tomysImages.breakfastBurrito },
+  { label: "Fish Tacos", src: tomysImages.fishTacos },
+  { label: "Shrimp Tacos", src: tomysImages.shrimpTacos },
+  { label: "Torta Oaxaquena", src: tomysImages.torta },
+  { label: "Truck", src: tomysImages.truck },
+  { label: "Logo", src: tomysImages.logo },
+  { label: "Catering Salmon", src: tomysImages.cateringSalmon },
+  { label: "Catering Pasta", src: tomysImages.cateringPasta },
+  { label: "Catering Steak", src: tomysImages.cateringSteak },
+];
 
 function slugify(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -78,69 +82,4 @@ export function defaultMenuItems(): DashboardMenuItem[] {
       imageSrc: defaultItemImage(category.name, item.name),
     })),
   );
-}
-
-export async function listPublicImageOptions(): Promise<DashboardImageOption[]> {
-  const files = await readdir(imageDirectory);
-
-  return files
-    .filter((file) => imagePattern.test(file))
-    .sort((left, right) => left.localeCompare(right))
-    .map((file) => ({
-      label: file
-        .replace(imagePattern, "")
-        .replace(/[-_]+/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase()),
-      src: `/images/tomys/${file}`,
-    }));
-}
-
-export async function readDashboardContent() {
-  const defaultImages = defaultImageSelections();
-  const defaultMenu = defaultMenuItems();
-  const availableImages = await listPublicImageOptions();
-  const db = getAdminDb();
-
-  if (!db) {
-    return {
-      firebaseAdminReady: false,
-      imageSelections: defaultImages,
-      menuItems: defaultMenu,
-      availableImages,
-      orderLinks,
-    };
-  }
-
-  const [settingsSnap, menuSnap] = await Promise.all([
-    db.doc("siteContent/settings").get(),
-    db.collection("menuItems").get(),
-  ]);
-
-  const settings = settingsSnap.data() ?? {};
-  const imageSelections = {
-    ...defaultImages,
-    ...((settings.images as Record<string, string> | undefined) ?? {}),
-  };
-
-  const storedMenuItems = menuSnap.docs.map((doc) => {
-    const data = doc.data() as Partial<DashboardMenuItem>;
-    return {
-      id: doc.id,
-      name: data.name ?? "",
-      price: data.price ?? "",
-      description: data.description ?? "",
-      category: data.category ?? "Breakfast",
-      visible: data.visible ?? true,
-      sortOrder: typeof data.sortOrder === "number" ? data.sortOrder : 0,
-      imageSrc: data.imageSrc ?? defaultItemImage(data.category ?? "Breakfast", data.name ?? ""),
-    };
-  });
-
-  return {
-    firebaseAdminReady: true,
-    imageSelections,
-    menuItems: storedMenuItems.length ? storedMenuItems : defaultMenu,
-    availableImages,
-    orderLinks: ((settings.orderLinks as typeof orderLinks | undefined) ?? orderLinks),
-  };
 }
