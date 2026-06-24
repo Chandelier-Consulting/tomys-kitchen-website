@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { FaPhone, FaRegMessage } from "react-icons/fa6";
+import Reveal from "@/components/Reveal";
 
 const phoneNumber = "+16502898628";
 
@@ -26,13 +27,13 @@ export default function GroupOrderPlanner() {
   const smsHref = `sms:${phoneNumber}?&body=${encodeURIComponent(message)}`;
 
   return (
-    <section className="px-5 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-border bg-surface p-5 shadow-[0_24px_80px_rgba(0,0,0,.22)] lg:grid-cols-[.82fr_1.18fr] lg:p-8">
+    <section className="px-5 py-20 sm:px-6 lg:px-8 lg:py-24">
+      <Reveal className="mx-auto grid max-w-6xl gap-8 rounded-[2rem] border border-border bg-surface p-5 shadow-[0_24px_80px_rgba(0,0,0,.22)] lg:grid-cols-[.82fr_1.18fr] lg:p-8" variant="float">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-accent">Fast catering inquiry</p>
-          <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Turn a vague event order into a clear text.</h2>
+          <h2 className="mt-4 text-4xl font-black leading-none tracking-[-0.03em] text-secondary sm:text-6xl">Build your message before you call or text.</h2>
           <p className="mt-5 text-base font-semibold leading-7 text-muted">
-            Fill in the basics and send Tomas a clean SMS. No login, no waiting, no complicated catering system.
+            Fill in the basics and send Tomas a clean SMS so your headcount, timing, and food ideas are already clear.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
             <a href={smsHref} className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-primary px-7 text-sm font-black text-white transition hover:bg-primary-hover">
@@ -72,7 +73,7 @@ export default function GroupOrderPlanner() {
             <pre className="mt-3 whitespace-pre-wrap font-sans text-sm font-semibold leading-6 text-muted">{message}</pre>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

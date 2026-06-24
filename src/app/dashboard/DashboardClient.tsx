@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { FaPlus, FaTriangleExclamation, FaTrash } from "react-icons/fa6";
-import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
 import type { DashboardImageOption, DashboardImageSlot, DashboardMenuItem } from "@/lib/dashboard-content";
 import { db, firebaseReady } from "@/lib/firebase-client";
 
@@ -67,13 +67,13 @@ export default function DashboardClient({
   imageSlots,
 }: {
   availableImages: DashboardImageOption[];
-  firebaseAdminReady: boolean;
   initialImageSelections: Record<string, string>;
   initialMenuItems: DashboardMenuItem[];
   imageSlots: DashboardImageSlot[];
 }) {
   const [imageSelections, setImageSelections] = useState(initialImageSelections);
   const [menuItems, setMenuItems] = useState(initialMenuItems);
+  const [remoteItemIds, setRemoteItemIds] = useState<string[]>([]);
   const [sectionStatus, setSectionStatus] = useState("");
   const [menuStatus, setMenuStatus] = useState("");
   const [sectionUploads, setSectionUploads] = useState<Record<string, File | null>>({});
@@ -113,6 +113,7 @@ export default function DashboardClient({
     });
 
     const unsubMenu = onSnapshot(collection(db, "menuItems"), (snapshot) => {
+      setRemoteItemIds(snapshot.docs.map((docSnap) => docSnap.id));
       const items = snapshot.docs.map((docSnap) => {
         const data = docSnap.data() as Partial<DashboardMenuItem>;
         return {
@@ -136,7 +137,7 @@ export default function DashboardClient({
       unsubSettings();
       unsubMenu();
     };
-  }, [availableImages, initialImageSelections]);
+  }, [availableImages]);
 
   const updateMenuItem = (id: string, field: keyof DashboardMenuItem, value: string | number | boolean) => {
     setMenuItems((current) => current.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
@@ -237,7 +238,15 @@ export default function DashboardClient({
         ),
       );
 
+      const finalIds = new Set(finalItems.map((item) => item.id));
+      const removedIds = remoteItemIds.filter((id) => !finalIds.has(id));
+
+      if (removedIds.length) {
+        await Promise.all(removedIds.map((id) => deleteDoc(doc(firestore, "menuItems", id))));
+      }
+
       setMenuItems(finalItems);
+      setRemoteItemIds(finalItems.map((item) => item.id));
       setItemUploads({});
       setMenuStatus("Menu changes saved.");
     });

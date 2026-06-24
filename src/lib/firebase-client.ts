@@ -12,7 +12,7 @@ const firebaseConfig = {
   measurementId: "G-CRQR2R4R9M",
 };
 
-export const firebaseReady = true;
+export const firebaseReady = Boolean(firebaseConfig.projectId);
 
 export const firebaseApp = firebaseReady
   ? getApps()[0] ?? initializeApp(firebaseConfig)

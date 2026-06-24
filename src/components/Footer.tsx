@@ -23,12 +23,12 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border bg-[var(--kitchen-night)] text-white">
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-10 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr] lg:px-8">
+      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr] lg:px-8">
         <div>
           <Link href="/" className="text-2xl font-extrabold text-primary">
             Tomy&apos;s Kitchen
           </Link>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-white/72">
+          <p className="mt-4 max-w-sm text-sm leading-6 text-white/80">
             Family owned, fresh Mexican breakfast, tacos, seafood, catering, and daily plates on El Camino Real.
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
@@ -49,7 +49,7 @@ export default function Footer() {
 
         <div>
           <h2 className="text-sm font-bold uppercase tracking-[0.16em] text-accent">Contact</h2>
-          <div className="mt-4 grid gap-3 text-sm text-white/78">
+          <div className="mt-4 grid gap-3 text-sm text-white/82">
             <p className="flex gap-3">
               <FaLocationDot className="mt-1 shrink-0 text-primary" aria-hidden />
               <span>239 W El Camino Real, Mountain View, CA 94040</span>
@@ -70,7 +70,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-5 py-5 text-center text-xs text-white/58">
+      <div className="border-t border-white/10 px-5 py-5 text-center text-xs text-white/72">
         © {new Date().getFullYear()} Tomy&apos;s Kitchen. All rights reserved.
       </div>
     </footer>

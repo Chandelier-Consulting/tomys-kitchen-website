@@ -13,7 +13,6 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-[#0f0e0d] px-5 pb-12 pt-28 text-white sm:px-6 lg:px-8">
       <DashboardClient
         availableImages={dashboardImageOptions}
-        firebaseAdminReady={false}
         initialImageSelections={defaultImageSelections()}
         initialMenuItems={defaultMenuItems()}
         imageSlots={dashboardImageSlots}
